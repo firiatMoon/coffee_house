@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/coffee_house_db
+    username: coffee_house_admin
+    password: password-coffee
+    hikari:
+      driver-class-name: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
