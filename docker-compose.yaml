@@ -26,7 +26,7 @@ services:
       POSTGRES_PASSWORD: password-coffee
       POSTGRES_DB: coffee_house_db
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - db-coffee-house:/var/lib/postgresql/data
     networks:

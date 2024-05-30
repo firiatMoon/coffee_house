@@ -4,5 +4,5 @@
 CREATE TABLE IF NOT EXISTS product(
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
-    description VARCHAR(100) NOT NULL
+    description VARCHAR(1000) NOT NULL
     );
