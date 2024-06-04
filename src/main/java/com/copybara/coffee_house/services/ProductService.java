@@ -32,8 +32,8 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void delete(Product product) {
-        productRepository.delete(product);
+    public void delete(Long id) {
+        productRepository.deleteById(id);
     }
 
     //Конвертацию из Product в ProductDto

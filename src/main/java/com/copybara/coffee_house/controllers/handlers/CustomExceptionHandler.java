@@ -1,5 +1,5 @@
 package com.copybara.coffee_house.controllers.handlers;
-
+import org.springframework.ui.Model;
 import com.copybara.coffee_house.exceptions.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +19,10 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView handleException(Exception exception){
         ModelAndView modelAndView = new ModelAndView("/error/generic_error");
+        modelAndView.addObject("message", exception.getMessage());
         modelAndView.addObject("exception", exception.getStackTrace());
         return modelAndView;
     }

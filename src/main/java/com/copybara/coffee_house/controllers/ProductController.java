@@ -38,13 +38,9 @@ public class ProductController {
 
     @GetMapping("/edit/{id}")
     public String showEditProduct(@PathVariable Long id, Model model) {
-        try{
-            Product product = productService.findById(id);
-            ProductDto productDto = productService.convertToDto(product);
-            model.addAttribute("productDto", productDto);
-        } catch (EntityNotFoundException ex) {
-            return "error/not_found";
-        }
+        Product product = productService.findById(id);
+        ProductDto productDto = productService.convertToDto(product);
+        model.addAttribute("productDto", productDto);
         return "product/form";
     }
 
@@ -60,8 +56,7 @@ public class ProductController {
 
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
-        Product product = productService.findById(id);
-        productService.delete(product);
+        productService.delete(id);
         return "redirect:/product";
     }
 }

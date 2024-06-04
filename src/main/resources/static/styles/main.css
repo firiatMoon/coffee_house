@@ -1,0 +1,32 @@
+body {
+    height: 100%;
+    font-family: Oswald, Arial, sans-serif;
+    font-size: 27px;
+    color: #252B42;
+}
+
+nav .nav-item a {
+    /*color:#666;*/
+    background-image: linear-gradient(to right, #feffff, #9498a6);
+    background-repeat: no-repeat;
+    background-size: 0 100%;
+    /*border-radius: 4px;*/
+    text-decoration: none;
+    padding: 5px 15px;
+    transition: 0.3s;
+}
+nav .nav-item a:hover {
+    background-size: 100% 100%;
+}
+
+.category__logo img {
+    width: 20%;
+}
+.arial__category {
+    font-family: 'Arial Narrow', sans-serif;
+}
+
+.footer__social_network img{
+    width: 10%;
+    height: 16%;
+}

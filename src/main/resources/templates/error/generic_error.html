@@ -11,16 +11,26 @@
     <title>Error</title>
 </head>
 <body>
-<header></header>
+    <header>
+        <div th:replace="fragments/navbar :: navbar "></div>
+    </header>
     <main>
         <div class="container">
-            <p th:text="${exception}"></p>
+            <h1>Something went wrong</h1>
+            <p th:text="${exception.message}">${exception.message}}</p>
+            <ul th:remove="tag">
+                <li th:each="stack: ${exception.stackTrace}">
+                    <span th:text="${stack}">${stack}</span>
+                </li>
+            </ul>
             <div class="col-sm-4 d-grid">
-                <a class="btn btn-outline-primary" href="/" role="button">Go Home</a>
+                <a class="btn btn-outline-secondary" href="/" role="button">Go Home</a>
             </div>
         </div>
     </main>
-    <footer></footer>
+    <footer>
+        <div th:replace="fragments/footer :: footer"></div>
+    </footer>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
