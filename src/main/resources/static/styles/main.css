@@ -1,8 +1,19 @@
 body {
+    /*background: url("../background/first.jpg") no-repeat;*/
     height: 100%;
     font-family: Oswald, Arial, sans-serif;
     font-size: 27px;
     color: #252B42;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 nav .nav-item a {
@@ -10,10 +21,10 @@ nav .nav-item a {
     background-image: linear-gradient(to right, #feffff, #9498a6);
     background-repeat: no-repeat;
     background-size: 0 100%;
-    /*border-radius: 4px;*/
+    border-radius: 4px;
     text-decoration: none;
     padding: 5px 15px;
-    transition: 0.3s;
+    transition: 0.6s;
 }
 nav .nav-item a:hover {
     background-size: 100% 100%;
@@ -24,6 +35,10 @@ nav .nav-item a:hover {
 }
 .arial__category {
     font-family: 'Arial Narrow', sans-serif;
+}
+
+footer {
+    flex: 0 0 auto;
 }
 
 .footer__social_network img{

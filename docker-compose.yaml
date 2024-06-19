@@ -1,21 +1,21 @@
 version: '3.8'
 services:
 
-  coffee_house:
-    container_name: coffee_house
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: 'jdbc:postgresql://coffee_house_db:5432/coffee_house_db'
-      SPRING_DATASOURCE_USERNAME: coffee_house_admin
-      SPRING_DATASOURCE_PASSWORD: password-coffee
-    depends_on:
-      - coffee_house_db
-    networks:
-      - appnet
+#  coffee_house:
+#    container_name: coffee_house
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      SPRING_DATASOURCE_URL: 'jdbc:postgresql://coffee_house_db:5432/coffee_house_db'
+#      SPRING_DATASOURCE_USERNAME: coffee_house_admin
+#      SPRING_DATASOURCE_PASSWORD: password-coffee
+#    depends_on:
+#      - coffee_house_db
+#    networks:
+#      - appnet
 
   coffee_house_db:
     image: postgres:16-alpine

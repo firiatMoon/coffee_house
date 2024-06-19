@@ -1,8 +1,11 @@
 package com.copybara.coffee_house.dto;
 
 
+import com.copybara.coffee_house.entities.Category;
 import jakarta.validation.constraints.*;
 import lombok.*;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -19,4 +22,9 @@ public class ProductDto {
     @Size(min=10, message = "The description should be at least 10 characters")
     @Size(max=1000, message = "The description cannot exceed 1000 characters")
     private String description;
+
+    private Category category;
+
+    @Min(0)
+    private BigDecimal price;
 }

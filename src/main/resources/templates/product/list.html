@@ -10,17 +10,22 @@
     <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
 </head>
 <body>
+
     <header>
         <div th:replace="fragments/navbar :: navbar "></div>
     </header>
+    <div class="wrapper">
     <main>
         <div class="container m-5">
+            <a class="btn btn-outline-dark mb-4" th:href="@{product/new}">Create new product</a>
             <h1>Product List</h1>
             <table class="table table-striped fs-5">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Category</th>
+                        <th>Price</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -28,6 +33,8 @@
                     <tr class="arial__category" th:each="product: ${products}">
                         <td th:text="${product.name}"></td>
                         <td th:text="${product.description}"></td>
+                        <td th:text="${product.category}"></td>
+                        <td th:text="${product.price}"></td>
                         <td style="white-space: nowrap">
                             <a class = "btn btn-outline-dark fs-5"
                                th:href = "@{/product/edit/{id}(id=${product.id})}">Edit</a>
@@ -40,10 +47,12 @@
                 </tbody>
             </table>
         </div>
+
     </main>
     <footer>
         <div th:replace="fragments/footer :: footer"></div>
     </footer>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>

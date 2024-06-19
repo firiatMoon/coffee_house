@@ -1,0 +1,96 @@
+package com.copybara.coffee_house.services;
+import com.copybara.coffee_house.security.HashPasswordEncoder;
+import com.copybara.coffee_house.dto.UserDto;
+import com.copybara.coffee_house.entities.User;
+import com.copybara.coffee_house.enums.Role;
+import com.copybara.coffee_house.exceptions.EntityNotFoundException;
+import com.copybara.coffee_house.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.List;
+
+@Service
+public class UserService implements UserDetailsService {
+    private final UserRepository userRepository;
+    private final HashPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(UserRepository userRepository, HashPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByPhone(username)
+                .map(user -> new org.springframework.security.core.userdetails.User(
+                        user.getUsername(),
+                        user.getPassword(),
+                        Collections.singleton(user.getRole())
+                ))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public void save(UserDto userDto) {
+        if(userRepository.findByPhone(userDto.getPhone()).isPresent()){
+            throw new EntityNotFoundException("User already exists");
+        }
+        if(!userDto.getPassword().equals(userDto.getConfirmPassword())){
+            throw new BadCredentialsException("Passwords do not match");
+        }
+        User user = convertFromDto(userDto);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setActive(true);
+        //user.setRole(Role.ROLE_USER);
+        userRepository.save(user);
+    }
+
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(()
+                -> new EntityNotFoundException(String.format("User with id = %s not found", id)
+        ));
+    }
+
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    //Конвертацию из User в UserDto
+    public UserDto convertToDto(User user) {
+        UserDto.UserDtoBuilder builderDto = UserDto.builder();
+        return builderDto
+                .id(user.getId())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .birthday(user.getBirthday())
+                .role(user.getRole())
+                .build();
+    }
+
+    //Конвертацию из UserDto в User
+    public User convertFromDto(UserDto userDto) {
+        User.UserBuilder builder = User.builder();
+        return builder
+                .id(userDto.getId())
+                .username(userDto.getUsername())
+                .password(userDto.getPassword())
+                .email(userDto.getEmail())
+                .phone(userDto.getPhone())
+                .birthday(userDto.getBirthday())
+                .role(userDto.getRole())
+                .build();
+    }
+}

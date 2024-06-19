@@ -4,11 +4,12 @@ import com.copybara.coffee_house.dto.ProductDto;
 import com.copybara.coffee_house.entities.Product;
 import com.copybara.coffee_house.exceptions.EntityNotFoundException;
 import com.copybara.coffee_house.repositories.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Slf4j
 @Service
 public class ProductService {
 
@@ -43,15 +44,21 @@ public class ProductService {
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
+                .category(product.getCategory())
+                .price(product.getPrice())
                 .build();
     }
 
     //Конвертацию из ProductDto в Product
     public Product convertFromDto(ProductDto productDto) {
-        Product product = new Product();
-        product.setId(productDto.getId());
-        product.setName(productDto.getName());
-        product.setDescription(productDto.getDescription());
-        return product;
+        Product.ProductBuilder builder = Product.builder();
+        log.info("{}",productDto.getCategory());
+        return builder
+                .id(productDto.getId())
+                .name(productDto.getName())
+                .description(productDto.getDescription())
+                .category(productDto.getCategory())
+                .price(productDto.getPrice())
+                .build();
     }
 }

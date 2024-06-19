@@ -1,3 +1,7 @@
 databaseChangeLog:
   - include:
       file: db/changelog/db.changelog-1.0.create_product.sql
+  - include:
+      file: db/changelog/db.changelog-2.0.create_user.sql
+  - include:
+      file: db/changelog/db.changelog-3.0.insert_user.sql

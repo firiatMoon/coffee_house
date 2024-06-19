@@ -1,10 +1,10 @@
 package com.copybara.coffee_house.controllers.handlers;
-import org.springframework.ui.Model;
 import com.copybara.coffee_house.exceptions.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.nio.file.AccessDeniedException;
 
 
 @ControllerAdvice
@@ -25,5 +25,11 @@ public class CustomExceptionHandler {
         modelAndView.addObject("message", exception.getMessage());
         modelAndView.addObject("exception", exception.getStackTrace());
         return modelAndView;
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleAccessDeniedException() {
+        return "error/access_denied";
     }
 }

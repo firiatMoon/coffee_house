@@ -1,9 +1,9 @@
 package com.copybara.coffee_house.repositories;
 
-import com.copybara.coffee_house.entities.Product;
+import com.copybara.coffee_house.entities.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface CategoryRepository extends JpaRepository<Category, Integer> {
 }

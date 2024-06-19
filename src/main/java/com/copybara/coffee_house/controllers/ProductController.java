@@ -1,15 +1,18 @@
 package com.copybara.coffee_house.controllers;
 
 import com.copybara.coffee_house.dto.ProductDto;
+import com.copybara.coffee_house.entities.Category;
 import com.copybara.coffee_house.entities.Product;
-import com.copybara.coffee_house.exceptions.EntityNotFoundException;
+import com.copybara.coffee_house.services.CategoryService;
 import com.copybara.coffee_house.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Controller
@@ -17,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping({"", "/"})
@@ -30,9 +35,10 @@ public class ProductController {
     }
 
     @GetMapping("/new")
-    public String showCreatePage(Model model) {
+    public String showCreatePageProduct(Model model) {
         ProductDto productDto = new ProductDto();
         model.addAttribute("productDto", productDto);
+        model.addAttribute("categories", categoryService.findAll());
         return "product/form";
     }
 
