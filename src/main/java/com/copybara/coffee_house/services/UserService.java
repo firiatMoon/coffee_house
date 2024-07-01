@@ -1,8 +1,7 @@
 package com.copybara.coffee_house.services;
-import com.copybara.coffee_house.security.HashPasswordEncoder;
+
 import com.copybara.coffee_house.dto.UserDto;
 import com.copybara.coffee_house.entities.User;
-import com.copybara.coffee_house.enums.Role;
 import com.copybara.coffee_house.exceptions.EntityNotFoundException;
 import com.copybara.coffee_house.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +9,19 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final HashPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, HashPasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -48,7 +47,6 @@ public class UserService implements UserDetailsService {
         User user = convertFromDto(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setActive(true);
-        //user.setRole(Role.ROLE_USER);
         userRepository.save(user);
     }
 

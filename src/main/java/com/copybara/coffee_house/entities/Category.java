@@ -3,10 +3,14 @@ package com.copybara.coffee_house.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "category")
@@ -19,4 +23,5 @@ public class Category {
     @Column(name = "title")
     @ToString.Include
     private String title;
+
 }

@@ -7,6 +7,7 @@ import com.copybara.coffee_house.services.CategoryService;
 import com.copybara.coffee_house.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,9 +29,38 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
+//    @GetMapping({"", "/"})
+//    public String showProductList(@RequestParam(value = "categoryId", required = false) String categoryId,
+//                                  Model model, String keyword) {
+//        List<Product> products = categoryId == null ? productService.findAll()
+//                : productService.findAllByCategory(Integer.parseInt(categoryId));
+//        model.addAttribute("products", products);
+//        model.addAttribute("categories", categoryService.findAll());
+//        return "product/list";
+//    }
+
     @GetMapping({"", "/"})
-    public String showProductList(Model model) {
-        model.addAttribute("products", productService.findAll());
+    public String getAllPages(Model model, @RequestParam(value = "categoryId", required = false) String categoryId) {
+        return getOnePage(model, categoryId, 1);
+    }
+
+    @GetMapping("/{pageNumber}")
+    public String getOnePage(Model model, @RequestParam(value = "categoryId", required = false) String categoryId,
+                             @PathVariable int pageNumber) {
+
+        Page<Product> page = categoryId == null ? productService.findPage(pageNumber)
+                : productService.findPageByCategory(Integer.parseInt(categoryId), pageNumber);
+        int totalPages = page.getTotalPages();
+        long totalElements = page.getTotalElements();
+       // Category category = categoryService.findById(Integer.parseInt(categoryId));
+        List<Product> products = page.getContent();
+
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalElements", totalElements);
+        model.addAttribute("products", products);
+        model.addAttribute("categories", categoryService.findAll());
+        //model.addAttribute("category", categoryId);
         return "product/list";
     }
 
@@ -47,6 +77,7 @@ public class ProductController {
         Product product = productService.findById(id);
         ProductDto productDto = productService.convertToDto(product);
         model.addAttribute("productDto", productDto);
+        model.addAttribute("categories", categoryService.findAll());
         return "product/form";
     }
 

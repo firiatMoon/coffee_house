@@ -6,55 +6,126 @@
     <title>Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link type='text/css' rel='stylesheet' th:href="@{/styles/main.css}">
     <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
 </head>
 <body>
-
+<div class="wrapper">
     <header>
-        <div th:replace="fragments/navbar :: navbar "></div>
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
     </header>
-    <div class="wrapper">
+
     <main>
         <div class="container m-5">
-            <a class="btn btn-outline-dark mb-4" th:href="@{product/new}">Create new product</a>
-            <h1>Product List</h1>
-            <table class="table table-striped fs-5">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="arial__category" th:each="product: ${products}">
-                        <td th:text="${product.name}"></td>
-                        <td th:text="${product.description}"></td>
-                        <td th:text="${product.category}"></td>
-                        <td th:text="${product.price}"></td>
-                        <td style="white-space: nowrap">
-                            <a class = "btn btn-outline-dark fs-5"
-                               th:href = "@{/product/edit/{id}(id=${product.id})}">Edit</a>
+            <div class="row">
+                <div class="col-lg-3">
+                    <ul class="list-group list-group-flush list-unstyled">
+                        <li>
+                            <a class="list-group-item list-group-item-dark list-group-item-action pe-4"
+                               href="/product">All products</a>
+                        </li>
+                    </ul>
+                    <ul class="list-group list-group-flush list-unstyled" th:each="category: ${categories}">
+                        <li>
+                            <a class="list-group-item list-group-item-light list-group-item-action pe-4 fs-6"
+                               th:href="@{/product(categoryId=${category.id})}" th:text="${category.title}"></a>
+                        </li>
+                    </ul>
+                </div>
 
-                            <a class = "btn btn-danger fs-5"
-                               th:href = "@{/product/delete/{id}(id=${product.id})}"
-                               onclick="return confirm('Are you sure?')">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <h1>Product List</h1>
+                        </div>
+                        <div class="col-lg-6">
+                            <a class="btn btn-outline-dark me-3" th:href="@{product/new}">Create new product</a>
+                            <!--                            <a class="btn btn-outline-dark" th:href="@{category/new}">Create new category</a>-->
+                            <a class="btn btn-outline-dark" th:href="@{category}">Snow categories</a>
+                        </div>
+                        <div class="col-lg-3">
+                            <form th:action="@{/product}" class="d-flex" method="get">
+                                <input class="form-control me-2" name="keyword" type="search" placeholder="Search"
+                                       aria-label="Search">
+                                <button class="btn btn-outline-dark" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
 
+                    <table class="table table-striped fs-6">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="arial__category" th:each="product: ${products}">
+                            <td th:text="${product.name}"></td>
+                            <td th:text="${product.description}"></td>
+                            <td th:text="${product.category}"></td>
+                            <td th:text="${product.price}"></td>
+                            <td style="white-space: nowrap">
+                                <a class="btn btn-outline-dark fs-5"
+                                   th:href="@{/product/edit/{id}(id=${product.id})}"><i class="bi bi-pencil"></i>
+                                    Edit</a>
+
+                                <a class="btn btn-danger fs-5"
+                                   th:href="@{/product/delete/{id}(id=${product.id})}"
+                                   onclick="return confirm('Are you sure?')"><i class="bi bi-trash3"></i> Delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="fs-5 mt-3">
+                        <nav aria-label="Page navigation example" th:unless="${totalElements < 6}">
+                            <p class="fs-6">Total items: [[${totalElements}]]
+                                Page [[${pageNumber}]] of [[${totalPages}]]</p>
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link text-dark" th:if="${pageNumber > 1}"
+                                       th:href="@{/product/1}">
+                                        <span th:unless="${pageNumber > 1}"></span>First</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link text-dark" th:if="${pageNumber > 1}"
+                                       th:href="@{'/product/' + ${pageNumber - 1}}">
+                                        <span th:unless="${pageNumber > 1}"></span>Previous</a>
+                                </li>
+                                <li class="page-item" th:each="pageNumber: ${#numbers.sequence(1, totalPages)}">
+                                    <a class="page-link text-dark"
+                                       th:href="@{/product(categoryId=${param.categoryId})/{pageNumber}(pageNumber=${pageNumber})}">
+                                        [[${pageNumber}]]
+                                    </a>
+<!--                                    @{/product(categoryId=${category.id})/{i}(i=${i})}-->
+<!--                                    @{'/product/' + ${i}}-->
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link text-dark" th:if="${pageNumber < totalPages}"
+                                       th:href="@{'/product/' + ${pageNumber + 1}}">
+                                        <span th:unless="${pageNumber < totalPages}"></span>Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link text-dark" th:if="${pageNumber < totalPages}"
+                                       th:href="@{'/product/' + ${totalPages}}">
+                                        <span th:unless="${pageNumber < totalPages}"></span>Last</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
     </main>
     <footer>
-        <div th:replace="fragments/footer :: footer"></div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </footer>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+</script>
 </body>
 </html>
