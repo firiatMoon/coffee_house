@@ -9,9 +9,9 @@ services:
 #    ports:
 #      - "8080:8080"
 #    environment:
-#      SPRING_DATASOURCE_URL: 'jdbc:postgresql://coffee_house_db:5432/coffee_house_db'
-#      SPRING_DATASOURCE_USERNAME: coffee_house_admin
-#      SPRING_DATASOURCE_PASSWORD: password-coffee
+#      SPRING_DATASOURCE_URL: 'jdbc:postgresql://${POSTGRES_DATABASE}:5432/${POSTGRES_DATABASE}'
+#      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USERNAME}
+#      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
 #    depends_on:
 #      - coffee_house_db
 #    networks:
@@ -22,11 +22,11 @@ services:
     container_name: coffee_house_db
     restart: unless-stopped
     environment:
-      POSTGRES_USER: coffee_house_admin
-      POSTGRES_PASSWORD: password-coffee
-      POSTGRES_DB: coffee_house_db
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
     ports:
-      - "127.0.0.1:5432:5432"
+      - ${POSTGRES_PORT_MAPPING}
     volumes:
       - db-coffee-house:/var/lib/postgresql/data
     networks:

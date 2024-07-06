@@ -6,8 +6,7 @@ spring:
     url: jdbc:postgresql://127.0.0.1:5432/coffee_house_db
     username: coffee_house_admin
     password: password-coffee
-    hikari:
-      driver-class-name: org.postgresql.Driver
+    driverClassName: org.postgresql.Driver
   jpa:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -16,3 +15,7 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
+  telegram:
+    bot:
+      name: CapybaraCoffeeHouseBot
+      token:

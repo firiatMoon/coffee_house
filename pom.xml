@@ -19,6 +19,7 @@
 		<liquibase.version>4.27.0</liquibase.version>
 		<commons-codec.version>1.17.0</commons-codec.version>
 		<thymeleaf-extras-springsecurity.version>3.1.0.M1</thymeleaf-extras-springsecurity.version>
+		<telegrambot.version>7.4.2</telegrambot.version>
 	</properties>
 
 	<dependencies>
@@ -75,7 +76,21 @@
 			<artifactId>commons-codec</artifactId>
 			<version>${commons-codec.version}</version>
 		</dependency>
-
+<!--		<dependency>-->
+<!--			<groupId>org.telegram</groupId>-->
+<!--			<artifactId>telegrambots</artifactId>-->
+<!--			<version>${telegrambot.version}</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>org.telegram</groupId>
+			<artifactId>telegrambots-longpolling</artifactId>
+			<version>${telegrambot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.telegram</groupId>
+			<artifactId>telegrambots-client</artifactId>
+			<version>${telegrambot.version}</version>
+		</dependency>
 
 	</dependencies>
 
