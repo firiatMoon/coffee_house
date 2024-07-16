@@ -14,8 +14,26 @@ spring:
       ddl-auto: none
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: i.firiat@gmail.com
+    password: "srgm kdnd ubsq yypt"
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
-  telegram:
-    bot:
-      name: CapybaraCoffeeHouseBot
-      token:
+telegram:
+  bot:
+    name: CapybaraCoffeeHouseBot
+    token: 7063257787:AAHkR_1H6lCG3zRvvbt4BOMGn6DsQyPvww0
+
+service:
+  activation:
+    uri: http://127.0.0.1:8080/user/activation?id={id}
+  mail:
+    uri: http://127.0.0.1:8080/mail/send

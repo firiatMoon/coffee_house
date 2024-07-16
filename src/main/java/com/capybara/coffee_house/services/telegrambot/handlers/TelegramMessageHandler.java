@@ -1,7 +1,8 @@
 package com.capybara.coffee_house.services.telegrambot.handlers;
 
 import com.capybara.coffee_house.entities.Client;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 public interface TelegramMessageHandler {
-    void handle(String message, Long chatId, Client client);
+    SendMessage handle(String pointRegistration, Long chatId, Client client);
 }

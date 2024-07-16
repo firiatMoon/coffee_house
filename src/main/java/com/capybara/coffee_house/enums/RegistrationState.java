@@ -5,7 +5,7 @@ public enum RegistrationState {
     ASK_NAME,
     ASK_EMAIL,
     ASK_BIRTHDATE,
-    REGISTERED,
-    FILLING_PROFILE,
-    PROFILE_FILLED;
+    WAITING_FOR_REGISTRATION,
+    REGISTERED;
+
 }

@@ -39,7 +39,8 @@ public class Client {
     @Column(name = "is_active")
     private boolean active;
 
-    private long chatId;
+    @Column(name = "chat_id")
+    private Long chatId;
 
     @Column(name = "registration_state")
     @Enumerated(EnumType.STRING)

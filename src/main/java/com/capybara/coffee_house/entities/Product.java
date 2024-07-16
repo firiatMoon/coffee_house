@@ -25,7 +25,7 @@ public class Product {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
 

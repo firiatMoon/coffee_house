@@ -27,10 +27,6 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-//    public List<Product> findAllByCategory(Integer categoryId) {
-//        return productRepository.findAllByCategoryId(categoryId);
-//    }
-
     public Page<Product> findPage(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber -1, 5);
         return productRepository.findAll(pageable);
@@ -55,11 +51,6 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-
-//    //search category
-//    public List<Product> findByProductWithSearch(String keyword) {
-//        return productRepository.findByKeyword(keyword);
-//    }
 
     //Конвертацию из Product в ProductDto
     public ProductDto convertToDto(Product product) {

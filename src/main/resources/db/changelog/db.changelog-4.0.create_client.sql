@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS client(
     email VARCHAR(100) UNIQUE,
     created_at TIMESTAMP,
     is_active BOOLEAN DEFAULT FALSE,
-    chat_id BIGSERIAL UNIQUE,
+    chat_id BIGINT UNIQUE,
     registration_state VARCHAR(32)
     );
 

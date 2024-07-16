@@ -12,21 +12,21 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 @Configuration
 public class TelegramBotConfig {
 
-    @Value("${telegram.bot.name}")
-    private String name;
+    private final TelegramBotProperties telegramBotProperties;
 
-    @Value("${telegram.bot.token}")
-    private String token;
+    public TelegramBotConfig(TelegramBotProperties telegramBotProperties) {
+        this.telegramBotProperties = telegramBotProperties;
+    }
 
     @Bean
     public TelegramBotsLongPollingApplication tgBotApp(TelegramBot telegramBot) throws TelegramApiException {
         TelegramBotsLongPollingApplication botsApi = new TelegramBotsLongPollingApplication();
-        botsApi.registerBot(token, telegramBot);
+        botsApi.registerBot(telegramBotProperties.getToken(), telegramBot);
         return botsApi;
     }
 
     @Bean
     public TelegramClient telegramClient() {
-        return new OkHttpTelegramClient(token);
+        return new OkHttpTelegramClient(telegramBotProperties.getToken());
     }
 }

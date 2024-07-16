@@ -1,10 +1,12 @@
 package com.capybara.coffee_house.config;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@Data
+@Getter
+@Setter
 @Configuration
 @ConfigurationProperties(prefix = "telegram.bot")
 public class TelegramBotProperties {
