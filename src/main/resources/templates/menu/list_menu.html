@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link type='text/css' rel='stylesheet' th:href="@{/styles/main.css}">
+    <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
+</head>
+<body>
+    <div class="wrapper">
+    <header>
+        <div th:replace="fragments/navbar :: navbar "></div>
+    </header>
+
+    <main>
+        <div class="container m-5">
+            <div class="col-md-10 mx-auto rounded border p-4 m-4">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <h1>Menu</h1>
+                    </div>
+                    <div class="col-lg-8">
+                        <a class="btn btn-outline-dark me-3" th:href="@{menu/new}">Add new item</a>
+                    </div>
+                </div>
+                <table class="table table-striped fs-5">
+                    <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Unit of measure</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="arial__category" th:each="menuItem: ${menu}">
+                        <td th:text="${menuItem.product.name}"></td>
+                        <td th:text="${menuItem.unit.name}"></td>
+                        <td th:text="${menuItem.quantity}"></td>
+                        <td th:text="${menuItem.price}"></td>
+                        <td style="white-space: nowrap">
+                            <a class = "btn btn-outline-dark fs-5"
+                               th:href = "@{/menu/edit/{id}(id=${menuItem.id})}"><i class="bi bi-pencil"></i> Edit</a>
+
+                            <a class = "btn btn-danger fs-5"
+                               th:href = "@{/menu/delete/{id}(id=${menuItem.id})}"
+                               onclick="return confirm('Are you sure?')"><i class="bi bi-trash3"></i> Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="fs-5 mt-3">
+                    <nav aria-label="Page navigation example" th:unless="${totalElements < 6}">
+                        <p class="fs-6">Total items: [[${totalElements}]]
+                            Page [[${pageNumber}]] of [[${totalPages}]]</p>
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link text-dark" th:if="${pageNumber > 1}"
+                                   th:href="@{/menu(pageNumber=${0}, pageSize=${5})}">
+                                    <span th:unless="${pageNumber > 1}"></span>First</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link text-dark" th:if="${pageNumber > 0}"
+                                   th:href="@{/menu(pageNumber=${pageNumber - 1}, pageSize=${5})}">
+                                    <span th:unless="${pageNumber > 1}"></span>Previous</a>
+                            </li>
+                            <li class="page-item" th:each="pageNumber: ${#numbers.sequence(1, totalPages)}">
+                                <a class="page-link text-dark"
+                                   th:href="@{/menu(pageNumber=${pageNumber - 1}, pageSize=${5})}">
+                                    [[${pageNumber}]]
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link text-dark" th:if="${pageNumber < totalPages - 1}"
+                                   th:href="@{/menu(pageNumber=${pageNumber + 1}, pageSize=${5})}">
+                                    <span th:unless="${pageNumber < totalPages}"></span>Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link text-dark" th:if="${pageNumber < totalPages}"
+                                   th:href="@{/menu(pageNumber=${totalPages - 1})}">
+                                    <span th:unless="${pageNumber < totalPages}"></span>Last</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div th:replace="fragments/footer :: footer"></div>
+    </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+</body>
+</html>

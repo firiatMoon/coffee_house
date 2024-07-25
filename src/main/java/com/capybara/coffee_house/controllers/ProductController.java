@@ -1,12 +1,15 @@
 package com.capybara.coffee_house.controllers;
 
 import com.capybara.coffee_house.dto.ProductDto;
+import com.capybara.coffee_house.entities.Menu;
 import com.capybara.coffee_house.services.CategoryService;
 import com.capybara.coffee_house.entities.Product;
 import com.capybara.coffee_house.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,20 +41,21 @@ public class ProductController {
 //        return "product/list";
 //    }
 
+//    @GetMapping({"", "/"})
+//    public String getAllPages(Model model, @RequestParam(value = "categoryId", required = false) String categoryId) {
+//        return getOnePage(model, categoryId, 1);
+//    }
+
     @GetMapping({"", "/"})
-    public String getAllPages(Model model, @RequestParam(value = "categoryId", required = false) String categoryId) {
-        return getOnePage(model, categoryId, 1);
-    }
-
-    @GetMapping("/{pageNumber}")
-    public String getOnePage(Model model, @RequestParam(value = "categoryId", required = false) String categoryId,
-                             @PathVariable int pageNumber) {
-
-        Page<Product> page = categoryId == null ? productService.findPage(pageNumber)
-                : productService.findPageByCategory(Integer.parseInt(categoryId), pageNumber);
+    public String getAllPages(@RequestParam(value = "categoryId", required = false) String categoryId,
+                              @RequestParam(value = "pageNumber", required = false, defaultValue = "0") int pageNumber,
+                              @RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize,
+                              Model model) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Product> page = categoryId == null ? productService.findPage(pageable)
+                : productService.findPageByCategory(Integer.parseInt(categoryId), pageable);
         int totalPages = page.getTotalPages();
         long totalElements = page.getTotalElements();
-       // Category category = categoryService.findById(Integer.parseInt(categoryId));
         List<Product> products = page.getContent();
 
         model.addAttribute("pageNumber", pageNumber);
@@ -59,7 +63,6 @@ public class ProductController {
         model.addAttribute("totalElements", totalElements);
         model.addAttribute("products", products);
         model.addAttribute("categories", categoryService.findAll());
-        //model.addAttribute("category", categoryId);
         return "product/list";
     }
 

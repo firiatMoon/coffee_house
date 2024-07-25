@@ -17,6 +17,7 @@ public class CategoryService {
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
@@ -24,6 +25,7 @@ public class CategoryService {
     public void save(Category category) {
         categoryRepository.save(category);
     }
+
     public Category findById(Integer id) {
         return categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Category not found"));
     }

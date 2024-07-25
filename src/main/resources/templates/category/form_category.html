@@ -19,16 +19,16 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 mx-auto rounded border p-4 m-4">
-                    <h1 th:text="(${category.id == null} ? 'New Category' : 'Edit Category')"></h1>
-                    <form class="fs-5" th:action="@{/category/save}" th:object="${category}" method="post" enctype="multipart/form-data">
+                    <h1 th:text="(${categoryDto.id == null} ? 'New Category' : 'Edit Category')"></h1>
+                    <form class="fs-5" th:action="@{/category/save}" th:object="${categoryDto}" method="post" enctype="multipart/form-data">
                         <div class="row mb-3">
-                            <input type="hidden" name="id" th:field="${category.id}">
+                            <input type="hidden" name="id" th:field="${categoryDto.id}">
                         </div>
                         <div class="row mb-3">
                             <label for="name" class="col-sm-4 col-form-label">Name</label>
-                            <input class="arial__category" type="text" th:field="${category.title}" id="name" placeholder="Enter name">
+                            <input class="arial__category" type="text" th:field="${categoryDto.title}" id="name" placeholder="Enter name">
                             <p th:if="${#fields.hasErrors('title')}" th:errorclass="text-danger"
-                               th:errors="${category.title}"></p>
+                               th:errors="${categoryDto.title}"></p>
                         </div>
                         <div class = "row">
                             <div class="offset-sm-4 col-sm-4 d-grid">

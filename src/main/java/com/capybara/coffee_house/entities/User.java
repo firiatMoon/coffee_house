@@ -19,13 +19,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"id", "createdAt", "active", "role"})
-@EqualsAndHashCode(exclude = {"id"})
+@ToString
 @Entity
 @Table(name = "person")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ToString.Exclude
     private Long id;
 
     @Column(name = "username")
@@ -44,13 +44,16 @@ public class User implements UserDetails {
     private LocalDate  birthday;
 
     @Column(name = "created_at")
+    @ToString.Exclude
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "is_active")
+    @ToString.Exclude
     private boolean active;
 
     @Column(name = "role")
+    @ToString.Exclude
     @Enumerated(EnumType.STRING)
     private Role role;
 

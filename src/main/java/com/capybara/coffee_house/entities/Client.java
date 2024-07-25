@@ -13,14 +13,14 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"chatId", "createdAt", "active", "registrationState"})
-@EqualsAndHashCode(exclude = {"id"})
+@ToString
 @Entity
 @Table(name = "client")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ToString.Exclude
     private Long id;
 
     @Column(name = "username")
@@ -33,16 +33,20 @@ public class Client {
     private String email;
 
     @Column(name = "created_at")
+    @ToString.Exclude
     @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "is_active")
+    @ToString.Exclude
     private boolean active;
 
     @Column(name = "chat_id")
+    @ToString.Exclude
     private Long chatId;
 
     @Column(name = "registration_state")
+    @ToString.Exclude
     @Enumerated(EnumType.STRING)
     private RegistrationState registrationState;
 }

@@ -29,4 +29,9 @@ public class BonusCardService {
     public BonusCard getByClientId(Long clientId) {
         return bonusCardRepository.findByClientId(clientId);
     }
+
+    public BonusCard getByChatId(Long chatId) {
+        return bonusCardRepository.findByChatId(chatId)
+                .orElse(new BonusCard());
+    }
 }

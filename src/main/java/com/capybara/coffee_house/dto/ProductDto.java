@@ -24,7 +24,4 @@ public class ProductDto {
     private String description;
 
     private Category category;
-
-    @Min(0)
-    private BigDecimal price;
 }

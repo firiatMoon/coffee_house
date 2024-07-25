@@ -30,9 +30,8 @@ public class CategoryController {
 
     @GetMapping("/new")
     public String showCreatePageProduct(Model model) {
-        //Category category = new Category();
         CategoryDto categoryDto = new CategoryDto();
-        model.addAttribute("category", categoryDto);
+        model.addAttribute("categoryDto", categoryDto);
         return "category/form_category";
     }
 
@@ -40,7 +39,7 @@ public class CategoryController {
     public String showEditProduct(@PathVariable Integer id, Model model) {
         Category category = categoryService.findById(id);
         CategoryDto categoryDto = categoryService.convertToDto(category);
-        model.addAttribute("category", category);
+        model.addAttribute("categoryDto", categoryDto);
         return "category/form_category";
     }
 

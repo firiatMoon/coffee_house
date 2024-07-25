@@ -15,13 +15,14 @@ public class MessageHandler {
 
     private final ClientService clientService;
     private final ClientRegistrationHandler clientRegistrationHandler;
-    private final BonusCardHandler bonusCardHandler;
+    private final AfterRegistrationHandler afterRegistrationHandler;
 
     @Autowired
-    public MessageHandler(ClientService clientService, ClientRegistrationHandler clientRegistrationHandler, BonusCardHandler bonusCardHandler) {
+    public MessageHandler(ClientService clientService, ClientRegistrationHandler clientRegistrationHandler,
+                          AfterRegistrationHandler afterRegistrationHandler) {
         this.clientService = clientService;
         this.clientRegistrationHandler = clientRegistrationHandler;
-        this.bonusCardHandler = bonusCardHandler;
+        this.afterRegistrationHandler = afterRegistrationHandler;
     }
 
     public SendMessage handle(Update update) {
@@ -29,8 +30,7 @@ public class MessageHandler {
         Long chatId = update.getMessage().getChatId();
         Optional<Client> clientOptional = clientService.getByChatId(chatId);
         if (isClientRegistered(clientOptional)) {
-            Long clientId = clientOptional.map(Client::getId).orElse(null);
-            return bonusCardHandler.handle(clientId, chatId);
+            return afterRegistrationHandler.handle(messageText, chatId);
         } else {
             return clientRegistrationHandler.register(messageText, chatId, clientOptional);
         }

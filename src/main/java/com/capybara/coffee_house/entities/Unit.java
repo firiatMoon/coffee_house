@@ -3,9 +3,6 @@ package com.capybara.coffee_house.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,14 +10,13 @@ import java.util.List;
 @Builder
 @ToString
 @Entity
-@Table(name = "category")
-public class Category {
+@Table(name = "unit")
+public class Unit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Exclude
     private Integer id;
 
-    @Column(name = "title")
-    private String title;
-
+    @Column(name = "name")
+    private String name;
 }

@@ -20,5 +20,21 @@ CREATE TABLE IF NOT EXISTS product(
     price NUMERIC DEFAULT 0.0
     );
 
+CREATE TABLE IF NOT EXISTS unit(
+     id SERIAL PRIMARY KEY NOT NULL,
+     name VARCHAR(50) NOT NULL UNIQUE
+);
 
+INSERT INTO unit (name)
+VALUES ('psc'),
+       ('ml'),
+       ('gm')
+;
 
+CREATE TABLE IF NOT EXISTS menu_item(
+      id BIGSERIAL PRIMARY KEY,
+      product_id INT REFERENCES product (id) ON DELETE CASCADE,
+      unit_id INT REFERENCES unit (id) ON DELETE CASCADE,
+      quantity INT,
+      price NUMERIC DEFAULT 0.0
+);

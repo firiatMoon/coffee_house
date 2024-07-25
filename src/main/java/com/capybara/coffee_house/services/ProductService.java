@@ -7,7 +7,6 @@ import com.capybara.coffee_house.repositories.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -23,17 +22,16 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
+
     public List<Product> findAll() {
         return productRepository.findAll();
     }
 
-    public Page<Product> findPage(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber -1, 5);
+    public Page<Product> findPage(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
 
-    public Page<Product> findPageByCategory(Integer categoryId, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber - 1, 5);
+    public Page<Product> findPageByCategory(Integer categoryId, Pageable pageable) {
         return productRepository.findAllByCategoryId(categoryId, pageable);
     }
 
@@ -60,7 +58,6 @@ public class ProductService {
                 .name(product.getName())
                 .description(product.getDescription())
                 .category(product.getCategory())
-                .price(product.getPrice())
                 .build();
     }
 
@@ -73,7 +70,6 @@ public class ProductService {
                 .name(productDto.getName())
                 .description(productDto.getDescription())
                 .category(productDto.getCategory())
-                .price(productDto.getPrice())
                 .build();
     }
 }

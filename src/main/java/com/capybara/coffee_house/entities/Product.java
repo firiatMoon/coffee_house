@@ -10,13 +10,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(toBuilder = true)
-@ToString(exclude = {"id"})
-@EqualsAndHashCode(exclude = {"id"})
+@ToString
 @Entity
 @Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ToString.Exclude
     private Long id;
 
     @Column(name = "name")
@@ -27,8 +27,6 @@ public class Product {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Category category;
-
-    @Column(name = "price")
-    private BigDecimal price;
 }

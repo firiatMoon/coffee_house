@@ -19,40 +19,23 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 mx-auto rounded border p-4 m-4">
-                    <h1 th:text="(${productDto.id == null} ? 'New Product' : 'Edit Product')"></h1>
-                    <form class="fs-5" th:action="@{/product/save}" th:object="${productDto}" method="post" enctype="multipart/form-data">
+                    <h1 th:text="(${unitDto.id == null} ? 'New Unit item' : 'Edit Unit item')"></h1>
+                    <form class="fs-5" th:action="@{/unit/save}" th:object="${unitDto}" method="post" enctype="multipart/form-data">
                         <div class="row mb-3">
-                            <input type="hidden" name="id" th:field="${productDto.id}">
+                            <input type="hidden" name="id" th:field="${unitDto.id}">
                         </div>
                         <div class="row mb-3">
                             <label for="name" class="col-sm-4 col-form-label">Name</label>
-                            <input class="arial__category" type="text" th:field="${productDto.name}" id="name" placeholder="Enter name">
+                            <input class="arial__category" type="text" th:field="${unitDto.name}" id="name" placeholder="Enter name">
                             <p th:if="${#fields.hasErrors('name')}" th:errorclass="text-danger"
-                               th:errors="${productDto.name}"></p>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="description" class="col-sm-4 col-form-label">Description</label>
-                            <input class="arial__category" type="text" th:field="${productDto.description}" id="description"
-                                   placeholder="Enter description">
-                            <p th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger"
-                               th:errors="${productDto.description}"></p>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="category" class="col-sm-4 col-form-label">Category</label>
-                            <select id="category" class="form-select" th:field="*{category}">
-                                <option value="">-- Select category --</option>
-                                <option th:each="category: ${categories}" th:value="${category.id}"
-                                        th:text="${category.title}"></option>
-                            </select>
-                            <p th:if="${#fields.hasErrors('category')}" th:errorclass="text-danger"
-                               th:errors="${productDto.category}"></p>
+                               th:errors="${unitDto.name}"></p>
                         </div>
                         <div class = "row">
                             <div class="offset-sm-4 col-sm-4 d-grid">
                                 <button type="submit" class = "btn btn-secondary fs-5">Submit</button>
                             </div>
                             <div class="col-sm-4 d-grid">
-                                <a class="btn btn-outline-secondary fs-5" href="/product" role="button">Cancel</a>
+                                <a class="btn btn-outline-secondary fs-5" href="/unit" role="button">Cancel</a>
                             </div>
                         </div>
                     </form>
