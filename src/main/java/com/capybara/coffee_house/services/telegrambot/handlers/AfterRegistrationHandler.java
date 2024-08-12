@@ -10,8 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 
 import java.util.List;
 
-import static com.capybara.coffee_house.constants.TelegramBotConstant.NOT_RECOGNIZED;
-import static com.capybara.coffee_house.constants.TelegramBotConstant.START_MESSAGE;
+import static com.capybara.coffee_house.constants.TelegramBotConstant.*;
 
 
 @Service
@@ -24,25 +23,17 @@ public class AfterRegistrationHandler {
     }
 
     public SendMessage handle(String command, Long chatId) {
-        SendMessage sendMessage = switch (command) {
+        return switch (command) {
             case "/start" -> startMessage(chatId);
-            case "/bonus" -> bonusCard(chatId);
+            case "/bonus", "My bonus card" -> bonusCard(chatId);
             default -> defaultMessage(chatId);
         };
-
-        return sendMessage;
     }
 
     private SendMessage startMessage(Long chatId){
         return SendMessage.builder()
                 .chatId(chatId)
-                .text(START_MESSAGE)
-                .replyMarkup(ReplyKeyboardMarkup
-                        .builder()
-                        .resizeKeyboard(true)
-                        .selective(true)
-                        .keyboard(List.of(new KeyboardRow("My bonus card")))
-                        .build())
+                .text(ALREADY_REGISTERED)
                 .build();
     }
 

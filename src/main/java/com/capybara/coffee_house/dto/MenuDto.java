@@ -21,7 +21,7 @@ public class MenuDto {
     private Unit unit;
 
     @Min(0)
-    private int quantity;
+    private BigDecimal quantity;
 
     @Min(0)
     private BigDecimal price;

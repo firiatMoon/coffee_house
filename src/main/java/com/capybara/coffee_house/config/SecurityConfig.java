@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable);
         http
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login").permitAll();
+                    auth.requestMatchers("/login","/mail/*").permitAll();
                     auth.anyRequest().hasAnyRole("USER", "ADMIN");
                 })
                 .formLogin(login -> login

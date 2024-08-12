@@ -31,21 +31,6 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
-//    @GetMapping({"", "/"})
-//    public String showProductList(@RequestParam(value = "categoryId", required = false) String categoryId,
-//                                  Model model, String keyword) {
-//        List<Product> products = categoryId == null ? productService.findAll()
-//                : productService.findAllByCategory(Integer.parseInt(categoryId));
-//        model.addAttribute("products", products);
-//        model.addAttribute("categories", categoryService.findAll());
-//        return "product/list";
-//    }
-
-//    @GetMapping({"", "/"})
-//    public String getAllPages(Model model, @RequestParam(value = "categoryId", required = false) String categoryId) {
-//        return getOnePage(model, categoryId, 1);
-//    }
-
     @GetMapping({"", "/"})
     public String getAllPages(@RequestParam(value = "categoryId", required = false) String categoryId,
                               @RequestParam(value = "pageNumber", required = false, defaultValue = "0") int pageNumber,

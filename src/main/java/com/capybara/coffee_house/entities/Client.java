@@ -29,6 +29,9 @@ public class Client {
     @Column(name = "birthday")
     private LocalDate birthday;
 
+    @Column(name = "phone")
+    private String phone;
+
     @Column(name = "email")
     private String email;
 

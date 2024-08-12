@@ -1,8 +1,6 @@
 package com.capybara.coffee_house.services;
 
-import com.capybara.coffee_house.dto.CategoryDto;
 import com.capybara.coffee_house.dto.UnitDto;
-import com.capybara.coffee_house.entities.Category;
 import com.capybara.coffee_house.entities.Unit;
 import com.capybara.coffee_house.exceptions.EntityNotFoundException;
 import com.capybara.coffee_house.repositories.UnitRepository;

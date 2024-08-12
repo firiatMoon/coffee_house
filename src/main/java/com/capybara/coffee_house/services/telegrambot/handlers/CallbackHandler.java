@@ -1,7 +1,9 @@
 package com.capybara.coffee_house.services.telegrambot.handlers;
 
+import com.capybara.coffee_house.entities.BonusCard;
 import com.capybara.coffee_house.entities.Client;
 import com.capybara.coffee_house.enums.RegistrationState;
+import com.capybara.coffee_house.services.BonusCardService;
 import com.capybara.coffee_house.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,16 +11,22 @@ import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+
+import java.util.List;
 
 import static com.capybara.coffee_house.constants.TelegramBotConstant.*;
 
 @Service
 public class CallbackHandler {
     private final ClientService clientService;
+    private final BonusCardService bonusCardService;
 
     @Autowired
-    public CallbackHandler(ClientService clientService) {
+    public CallbackHandler(ClientService clientService, BonusCardService bonusCardService) {
         this.clientService = clientService;
+        this.bonusCardService = bonusCardService;
     }
 
     public SendMessage handleCallback(Update update) {

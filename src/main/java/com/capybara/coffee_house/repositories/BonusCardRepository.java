@@ -16,9 +16,17 @@ public interface BonusCardRepository extends JpaRepository<BonusCard, Long> {
             select bc.* 
             from bonus_card bc 
             join client c on bc.client_id = c.id 
-            where c.client_id = :chatId
+            where c.chat_id = :chatId
             """
     )
     Optional<BonusCard> findByChatId(@Param("chatId") Long chatId);
 
+    @Query(nativeQuery = true, value = """
+            select bc.* 
+            from bonus_card bc 
+            join client c on bc.client_id = c.id 
+            where c.phone = :phone
+            """
+    )
+    Optional<BonusCard> findByPhoneNumber(@Param("phone") String phone);
 }

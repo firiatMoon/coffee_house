@@ -2,10 +2,9 @@ package com.capybara.coffee_house.dto;
 
 
 import com.capybara.coffee_house.entities.Category;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.math.BigDecimal;
 
 @Getter
 @Setter

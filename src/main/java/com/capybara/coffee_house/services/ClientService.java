@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,5 +37,9 @@ public class ClientService {
         bonusCard.setClient(savedClient);
         bonusCard.setAmount(BigDecimal.valueOf(0.0));
         bonusCardService.save(bonusCard);
+    }
+
+    public List<Client> getUsersByBirthday(int month, int day) {
+        return clientRepository.findByMatchMonthAndMatchDay(month, day);
     }
 }

@@ -28,7 +28,7 @@ public class Menu {
     private Unit unit;
 
     @Column(name = "quantity")
-    private int quantity;
+    private BigDecimal quantity;
 
     @Column(name = "price")
     private BigDecimal price;

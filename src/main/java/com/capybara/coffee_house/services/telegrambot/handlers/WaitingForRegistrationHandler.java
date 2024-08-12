@@ -7,38 +7,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-
 import static com.capybara.coffee_house.constants.TelegramBotConstant.*;
 
 @Service
-public class AskBirthDateRegistrationHandler implements TelegramMessageHandler{
+public class WaitingForRegistrationHandler implements TelegramMessageHandler{
     private final ClientService clientService;
 
     @Autowired
-    public AskBirthDateRegistrationHandler(ClientService clientService) {
+    public WaitingForRegistrationHandler(ClientService clientService) {
         this.clientService = clientService;
     }
 
     @Override
-    public SendMessage handle(String birthday, Long chatId, Client client) {
-        try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-            LocalDate birthDate = LocalDate.parse(birthday, formatter);
-            client.setBirthday(birthDate);
-            client.setRegistrationState(RegistrationState.ASK_PHONE);
-            clientService.save(client);
+    public SendMessage handle(String pointRegistration, Long chatId, Client client) {
+        if(client.isActive()){
             return SendMessage.builder()
                     .chatId(chatId)
-                    .text(ASK_PHONE)
+                    .text(ALREADY_REGISTERED)
                     .build();
-        } catch (DateTimeParseException exception){
+        } else if (client.getEmail() != null) {
             return SendMessage.builder()
                     .chatId(chatId)
-                    .text(ASK_VALIDITY_BIRTHDAY)
+                    .text(CONFIRMATION_OF_REGISTRATION)
                     .build();
         }
+        client.setRegistrationState(RegistrationState.ASK_EMAIL);
+        clientService.save(client);
+        return SendMessage.builder()
+                .chatId(chatId)
+                .text(ASK_EMAIL)
+                .build();
     }
+
 }

@@ -6,8 +6,6 @@ import com.capybara.coffee_house.repositories.BonusCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class BonusCardService {
     private final BonusCardRepository bonusCardRepository;
@@ -33,5 +31,10 @@ public class BonusCardService {
     public BonusCard getByChatId(Long chatId) {
         return bonusCardRepository.findByChatId(chatId)
                 .orElse(new BonusCard());
+    }
+
+    //передаем номер телефона, получаем инфу о бонус карте
+    public BonusCard getByPhoneNumber(String phoneNumber){
+        return bonusCardRepository.findByPhoneNumber(phoneNumber).orElse(null);
     }
 }
