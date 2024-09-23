@@ -8,6 +8,11 @@ body {
     font-family: Oswald, Arial, sans-serif;
     font-size: 27px;
     color: #252B42;
+    /*background: linear-gradient(*/
+    /*        rgba(255, 255, 255, 0.7),*/
+    /*        rgba(255, 255, 255, 0.7)*/
+    /*), url("../images/background/background.JPG") no-repeat fixed center;*/
+    /*background-size: contain;*/
 }
 
 

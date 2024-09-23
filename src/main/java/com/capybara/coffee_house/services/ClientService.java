@@ -1,5 +1,6 @@
 package com.capybara.coffee_house.services;
 
+import com.capybara.coffee_house.dto.ClientDto;
 import com.capybara.coffee_house.entities.BonusCard;
 import com.capybara.coffee_house.entities.Client;
 import com.capybara.coffee_house.repositories.ClientRepository;
@@ -41,5 +42,30 @@ public class ClientService {
 
     public List<Client> getUsersByBirthday(int month, int day) {
         return clientRepository.findByMatchMonthAndMatchDay(month, day);
+    }
+
+    public ClientDto convertToDto(Client client) {
+        ClientDto.ClientDtoBuilder builder = ClientDto.builder();
+        return builder
+                .id(client.getId())
+                .username(client.getUsername())
+                .birthday(client.getBirthday())
+                .phone(client.getPhone())
+                .email(client.getEmail())
+                .chatId(client.getChatId())
+                .registrationState(client.getRegistrationState())
+                .build();
+    }
+
+    public Client convertFromDto(ClientDto clientDto) {
+        Client.ClientBuilder builder = Client.builder();
+        return builder
+                .id(clientDto.getId())
+                .username(clientDto.getUsername())
+                .birthday(clientDto.getBirthday())
+                .phone(clientDto.getPhone())
+                .email(clientDto.getEmail())
+                .registrationState(clientDto.getRegistrationState())
+                .build();
     }
 }

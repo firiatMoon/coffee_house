@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface BonusCardRepository extends JpaRepository<BonusCard, Long> {
-    BonusCard findByClientId(Long clientId);
+    Optional<BonusCard> findByClientId(Long clientId);
 
     @Query(nativeQuery = true, value = """
             select bc.* 
