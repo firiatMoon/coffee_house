@@ -13,8 +13,7 @@ public class UnexpectedExceptionHandler {
 
     @ExceptionHandler({UnexpectedErrorException.class})
     public ResponseEntity<UnexpectedErrorResponse> handleUnexpectedError(UnexpectedErrorException exception){
-        UnexpectedErrorResponse response = new UnexpectedErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                exception.getMessage());
+        UnexpectedErrorResponse response = new UnexpectedErrorResponse(exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

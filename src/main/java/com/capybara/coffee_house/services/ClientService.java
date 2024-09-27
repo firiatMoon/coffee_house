@@ -45,8 +45,7 @@ public class ClientService {
     }
 
     public ClientDto convertToDto(Client client) {
-        ClientDto.ClientDtoBuilder builder = ClientDto.builder();
-        return builder
+        return ClientDto.builder()
                 .id(client.getId())
                 .username(client.getUsername())
                 .birthday(client.getBirthday())
@@ -58,8 +57,7 @@ public class ClientService {
     }
 
     public Client convertFromDto(ClientDto clientDto) {
-        Client.ClientBuilder builder = Client.builder();
-        return builder
+        return Client.builder()
                 .id(clientDto.getId())
                 .username(clientDto.getUsername())
                 .birthday(clientDto.getBirthday())

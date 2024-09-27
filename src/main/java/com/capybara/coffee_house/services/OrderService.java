@@ -44,8 +44,7 @@ public class OrderService {
                 .map(clientService::convertFromDto)
                 .orElse(null);
 
-        Order.OrderBuilder orderBuilder = Order.builder();
-        orderBuilder
+        Order order = Order.builder()
                 .user(user)
                 .client(client)
                 .bonusPointsAction(orderFormDto.getBonusPointsAction())
@@ -54,7 +53,7 @@ public class OrderService {
                 .finalAmount(orderFormDto.getFinalAmount())
                 .build();
 
-        Order placedOrder = orderRepository.save(orderBuilder.build());
+        Order placedOrder = orderRepository.save(order);
 
         List<Long> menuItems = orderFormDto.getItems().stream()
                 .map(OrderFormItemDto::getMenuId)
@@ -82,19 +81,5 @@ public class OrderService {
         if (client != null) {
             clientBonusCardTransactionService.createTransactionFromOrder(placedOrder);
         }
-
-
-
-
-//        Order order = new Order();
-//
-//        order.setUser(user);
-//        order.setClient(client);
-//        order.setBonusPointsAction(orderFormDto.getBonusPointsAction());
-//        order.setTotalAmount(orderFormDto.getTotalAmount());
-//        order.setDiscountAmount(orderFormDto.getDiscountAmount());
-//        order.setFinalAmount(orderFormDto.getFinalAmount());
-//
-//        Order placedOrder = orderRepository.save(order);
     }
 }

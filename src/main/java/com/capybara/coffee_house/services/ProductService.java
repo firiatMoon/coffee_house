@@ -57,11 +57,10 @@ public class ProductService {
 
     //Конвертацию из Product в ProductDto
     public ProductDto convertToDto(Product product) {
-        ProductDto.ProductDtoBuilder builderDto = ProductDto.builder();
         CategoryDto categoryDto = Optional.ofNullable(product.getCategory())
                 .map(categoryService::convertToDto)
                 .orElse(new CategoryDto(null, null));
-        return builderDto
+        return ProductDto.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .description(product.getDescription())
@@ -71,12 +70,11 @@ public class ProductService {
 
     //Конвертацию из ProductDto в Product
     public Product convertFromDto(ProductDto productDto) {
-        Product.ProductBuilder builder = Product.builder();
         Category category = Optional.ofNullable(productDto.getCategory())
                         .map(categoryService::convertFromDto)
                                 .orElse(new Category(null, null));
         log.info("{}",productDto.getCategory());
-        return builder
+        return Product.builder()
                 .id(productDto.getId())
                 .name(productDto.getName())
                 .description(productDto.getDescription())

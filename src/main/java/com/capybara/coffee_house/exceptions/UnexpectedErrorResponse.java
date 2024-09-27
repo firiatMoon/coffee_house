@@ -8,6 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class UnexpectedErrorResponse {
-    private int statusCode;
     private String message;
 }

@@ -54,7 +54,6 @@ public class MenuService {
     }
 
     public MenuDto convertToDto(Menu menu) {
-        MenuDto.MenuDtoBuilder builderDto = MenuDto.builder();
         ProductDto productDto = Optional.ofNullable(menu.getProduct())
                 .map(productService::convertToDto)
                 .orElse(new ProductDto(null, null, null, null));
@@ -62,7 +61,7 @@ public class MenuService {
         UnitDto unitDto = Optional.ofNullable(menu.getUnit()).
                 map(unitService::convertToDto)
                 .orElse(new UnitDto(null, null));
-        return builderDto
+        return MenuDto.builder()
                 .id(menu.getId())
                 .product(productDto)
                 .unit(unitDto)
@@ -72,7 +71,6 @@ public class MenuService {
     }
 
     public Menu convertFromDto(MenuDto menuDto) {
-        Menu.MenuBuilder builder = Menu.builder();
         Product product = Optional.ofNullable(menuDto.getProduct())
                 .map(productService::convertFromDto)
                 .orElse(new Product(null, null, null, null));
@@ -80,7 +78,7 @@ public class MenuService {
         Unit unit = Optional.ofNullable(menuDto.getUnit())
                 .map(unitService::convertFromDto)
                 .orElse(new Unit(null, null));
-        return builder
+        return Menu.builder()
                 .id(menuDto.getId())
                 .product(product)
                 .unit(unit)

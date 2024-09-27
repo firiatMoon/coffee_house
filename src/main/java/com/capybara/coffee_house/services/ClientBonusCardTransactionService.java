@@ -3,7 +3,6 @@ package com.capybara.coffee_house.services;
 import com.capybara.coffee_house.entities.BonusCard;
 import com.capybara.coffee_house.entities.ClientBonusCardTransaction;
 import com.capybara.coffee_house.entities.Order;
-import com.capybara.coffee_house.enums.BonusPointsAction;
 import com.capybara.coffee_house.enums.TransactionType;
 import com.capybara.coffee_house.repositories.ClientBonusCardTransactionRepository;
 import jakarta.transaction.Transactional;
@@ -29,8 +28,6 @@ public class ClientBonusCardTransactionService {
     @Transactional
     public void createTransactionFromOrder(Order order) {
         BonusCard bonusCard = bonusCardService.getByClientId(order.getClient().getId());
-        ClientBonusCardTransaction.ClientBonusCardTransactionBuilder bonusCardTransactionBuilder =
-                ClientBonusCardTransaction.builder();
 
         TransactionType transactionType;
         BigDecimal points;
@@ -51,16 +48,15 @@ public class ClientBonusCardTransactionService {
             default:
                 throw new IllegalStateException("Invalid bonus points action");
         }
-        bonusCardTransactionBuilder
+
+        ClientBonusCardTransaction transaction = ClientBonusCardTransaction.builder()
                 .order(order)
                 .transactionType(transactionType)
                 .points(points)
                 .build();
-        clientBonusCardTransactionRepository.save(bonusCardTransactionBuilder.build());
 
-        String message = order.getBonusPointsAction().equals(BonusPointsAction.USE)
-                ? String.format("You have spent %s points. Your balance is %s", points, bonusCard.getAmount())
-                : String.format("You have received %s points. Your balance is %s", points, bonusCard.getAmount());
-        clientBonusNotificationService.notifyClient(message, order.getClient().getChatId());
+        clientBonusCardTransactionRepository.save(transaction);
+
+        clientBonusNotificationService.notifyClient(transaction, bonusCard);
     }
 }

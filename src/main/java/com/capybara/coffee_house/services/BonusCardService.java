@@ -48,11 +48,10 @@ public class BonusCardService {
     }
 
     public ClientBonusCardDto convertToDto(BonusCard bonusCard) {
-        ClientBonusCardDto.ClientBonusCardDtoBuilder builder = ClientBonusCardDto.builder();
         ClientDto clientDto = Optional.ofNullable(bonusCard.getClient())
                 .map(clientService::convertToDto)
                 .orElse(new ClientDto(null, null,null,null,null,null,null));
-        return builder
+        return ClientBonusCardDto.builder()
                 .id(bonusCard.getId())
                 .client(clientDto)
                 .amount(bonusCard.getAmount())

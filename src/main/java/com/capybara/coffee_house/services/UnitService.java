@@ -45,8 +45,7 @@ public class UnitService {
     }
 
     public Unit convertFromDto(UnitDto unitDto) {
-        Unit.UnitBuilder builder = Unit.builder();
-        return builder
+        return Unit.builder()
                 .id(unitDto.getId())
                 .name(unitDto.getName())
                 .build();
