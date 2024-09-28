@@ -1,34 +1,34 @@
 package com.capybara.coffee_house.entities;
 
 import jakarta.persistence.*;
-
 import lombok.*;
 
 import java.math.BigDecimal;
 
+
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder(toBuilder = true)
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "menu_item")
-public class Menu {
+@Table(name = "order_item")
+public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Exclude
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     @ToString.Exclude
-    private Product product;
+    private Order order;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "unit_id", referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "menu_id", referencedColumnName = "id")
     @ToString.Exclude
-    private Unit unit;
+    private Menu menu;
 
     @Column(name = "quantity")
     private BigDecimal quantity;

@@ -1,7 +1,6 @@
 package com.capybara.coffee_house.dto;
 
 
-import com.capybara.coffee_house.entities.Category;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -22,5 +21,5 @@ public class ProductDto {
     @Size(max=1000, message = "The description cannot exceed 1000 characters")
     private String description;
 
-    private Category category;
+    private CategoryDto category;
 }

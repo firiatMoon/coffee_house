@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS product(
     name VARCHAR(100) NOT NULL UNIQUE,
     description VARCHAR(1000) NOT NULL,
     category_id INT REFERENCES category (id) ON DELETE CASCADE,
-    price NUMERIC DEFAULT 0.0
+    price DECIMAL(10, 2) DEFAULT 0.0 NOT NULL
     );
 
 CREATE TABLE IF NOT EXISTS unit(

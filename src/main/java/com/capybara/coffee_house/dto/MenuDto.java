@@ -1,7 +1,5 @@
 package com.capybara.coffee_house.dto;
 
-import com.capybara.coffee_house.entities.Product;
-import com.capybara.coffee_house.entities.Unit;
 import jakarta.validation.constraints.Min;
 import lombok.*;
 
@@ -16,9 +14,9 @@ public class MenuDto {
 
     private Long id;
 
-    private Product product;
+    private ProductDto product;
 
-    private Unit unit;
+    private UnitDto unit;
 
     @Min(0)
     private BigDecimal quantity;

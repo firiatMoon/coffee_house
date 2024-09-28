@@ -66,8 +66,7 @@ public class UserService implements UserDetailsService {
 
     //Конвертацию из User в UserDto
     public UserDto convertToDto(User user) {
-        UserDto.UserDtoBuilder builderDto = UserDto.builder();
-        return builderDto
+        return UserDto.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .password(user.getPassword())
@@ -80,8 +79,7 @@ public class UserService implements UserDetailsService {
 
     //Конвертацию из UserDto в User
     public User convertFromDto(UserDto userDto) {
-        User.UserBuilder builder = User.builder();
-        return builder
+        return User.builder()
                 .id(userDto.getId())
                 .username(userDto.getUsername())
                 .password(userDto.getPassword())

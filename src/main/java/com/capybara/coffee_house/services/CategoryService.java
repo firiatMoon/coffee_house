@@ -35,16 +35,14 @@ public class CategoryService {
     }
 
     public CategoryDto convertToDto(Category category) {
-        CategoryDto.CategoryDtoBuilder builderDto = CategoryDto.builder();
-        return builderDto
+        return CategoryDto.builder()
                 .id(category.getId())
                 .title(category.getTitle())
                 .build();
     }
 
     public Category convertFromDto(CategoryDto categoryDto) {
-        Category.CategoryBuilder builder = Category.builder();
-        return builder
+        return Category.builder()
                 .id(categoryDto.getId())
                 .title(categoryDto.getTitle())
                 .build();

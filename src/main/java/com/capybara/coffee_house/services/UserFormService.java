@@ -9,8 +9,7 @@ public class UserFormService {
 
     //Конвертацию из User в UserDto
     public UserFormDto convertToDto(User user) {
-        UserFormDto.UserFormDtoBuilder builderDto = UserFormDto.builder();
-        return builderDto
+        return UserFormDto.builder()
                 .id(user.getId())
                 .username(user.getUsername())
                 .password("")
@@ -24,8 +23,7 @@ public class UserFormService {
 
     //Конвертацию из UserDto в User
     public User convertFromDto(UserFormDto userFormDto) {
-        User.UserBuilder builder = User.builder();
-        return builder
+        return User.builder()
                 .id(userFormDto.getId())
                 .username(userFormDto.getUsername())
                 .password(userFormDto.getPassword())
