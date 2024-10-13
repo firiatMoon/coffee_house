@@ -5,6 +5,7 @@ import com.capybara.coffee_house.dto.ProductDto;
 import com.capybara.coffee_house.entities.Category;
 import com.capybara.coffee_house.entities.Product;
 import com.capybara.coffee_house.exceptions.EntityNotFoundException;
+import com.capybara.coffee_house.repositories.CategoryRepository;
 import com.capybara.coffee_house.repositories.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,10 +2,10 @@
 
 --changeset veta:1
 CREATE TABLE IF NOT EXISTS orders(
-    id BIGSERIAL PRIMARY KEY NOT NULL,
+    id BIGSERIAL PRIMARY KEY,
     client_id BIGINT REFERENCES client (id),
     user_id BIGINT NOT NULL REFERENCES person (id),
-    bonus_points_action VARCHAR(5) CHECK (bonus_points_action IN ('USE', 'EARN') NOT NULL,
+    bonus_points_action VARCHAR(5) CHECK (bonus_points_action IN ('USE', 'EARN')),
     total_amount DECIMAL(10, 2) NOT NULL,
     discount_amount DECIMAL(10, 2) NOT NULL,
     final_amount DECIMAL(10, 2) NOT NULL,

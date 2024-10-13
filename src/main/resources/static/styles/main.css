@@ -42,8 +42,10 @@ nav .nav-item a:hover {
 }
 
 .category__logo img {
-    width: 20%;
+    width: 50%;
 }
+
+
 .arial__category {
     font-family: 'Arial Narrow', sans-serif;
 }

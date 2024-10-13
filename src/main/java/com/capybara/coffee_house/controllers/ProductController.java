@@ -1,6 +1,7 @@
 package com.capybara.coffee_house.controllers;
 
 import com.capybara.coffee_house.dto.ProductDto;
+import com.capybara.coffee_house.entities.Category;
 import com.capybara.coffee_house.entities.Menu;
 import com.capybara.coffee_house.services.CategoryService;
 import com.capybara.coffee_house.entities.Product;

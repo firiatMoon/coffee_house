@@ -6,6 +6,7 @@ import com.capybara.coffee_house.entities.BonusCard;
 import com.capybara.coffee_house.exceptions.EntityNotFoundException;
 import com.capybara.coffee_house.repositories.BonusCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,7 +17,7 @@ public class BonusCardService {
     private final ClientService clientService;
 
     @Autowired
-    public BonusCardService(BonusCardRepository bonusCardRepository, ClientService clientService) {
+    public BonusCardService(BonusCardRepository bonusCardRepository, @Lazy ClientService clientService) {
         this.bonusCardRepository = bonusCardRepository;
         this.clientService = clientService;
     }
