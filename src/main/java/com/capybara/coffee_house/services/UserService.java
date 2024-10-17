@@ -60,6 +60,11 @@ public class UserService implements UserDetailsService {
         ));
     }
 
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("User with name = %s not found", username)));
+    }
+
     public void delete(Long id) {
         userRepository.deleteById(id);
     }

@@ -26,7 +26,7 @@
                         </div>
                         <div class="row mb-3">
                             <label for="product" class="col-sm-4 col-form-label">Product</label>
-                            <select id="product" class="form-select" th:field="*{product}">
+                            <select id="product" class="form-select" th:field="*{product.id}">
                                 <option value="">-- Select product --</option>
                                 <option th:each="product: ${products}" th:value="${product.id}"
                                         th:text="${product.name}"></option>
@@ -36,7 +36,7 @@
                         </div>
                         <div class="row mb-3">
                             <label for="unit" class="col-sm-4 col-form-label">Unit</label>
-                            <select id="unit" class="form-select" th:field="*{unit}">
+                            <select id="unit" class="form-select" th:field="*{unit.id}">
                                 <option value="">-- Select unit --</option>
                                 <option th:each="unit: ${units}" th:value="${unit.id}"
                                         th:text="${unit.name}"></option>

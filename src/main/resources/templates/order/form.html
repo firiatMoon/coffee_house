@@ -19,8 +19,6 @@
     <div class="container m-5">
         <div class="col-md-10 mx-auto p-4 m-4">
         <h1>Create Order</h1>
-
-
         <form id="orderForm me-3">
             <div class="form-group">
                 <label for="phoneNumber">Phone Number</label>
@@ -141,7 +139,7 @@
                 clientBonusCard = bonusCard
                 $('#clientInfo').html(`
                     <h4>Client Info</h4>
-                    <p>Name: ${bonusCard.client.name}</p>
+                    <p>Name: ${bonusCard.client.username}</p>
                     <p>Email: ${bonusCard.client.email}</p>
                     <p>Phone: ${bonusCard.client.phone}</p>
                     <p>Points: ${bonusCard.amount}</p>

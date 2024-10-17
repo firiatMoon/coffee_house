@@ -18,6 +18,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
 
 
+
     @Query(value = "SELECT * FROM client " +
             "WHERE email IS NOT NULL " +
             "AND extract(MONTH FROM birthday) = :m " +
