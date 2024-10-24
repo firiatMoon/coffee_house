@@ -41,7 +41,8 @@ public class ClientBonusCardTransactionService {
             case EARN:
                 transactionType = TransactionType.CREDIT;
                 BigDecimal totalAmount = order.getTotalAmount();
-                points = totalAmount.multiply(BigDecimal.valueOf(bonusCard.getDiscountPercent() / 100));
+                points = totalAmount.multiply(BigDecimal.valueOf(bonusCard.getDiscountPercent()))
+                        .divide(BigDecimal.valueOf(100)) ;
                 bonusCard.setAmount(bonusCard.getAmount().add(points).setScale(2, RoundingMode.CEILING));
                 bonusCardService.save(bonusCard);
                 break;

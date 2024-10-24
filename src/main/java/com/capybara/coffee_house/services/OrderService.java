@@ -7,6 +7,7 @@ import com.capybara.coffee_house.entities.*;
 import com.capybara.coffee_house.repositories.OrderItemRepository;
 import com.capybara.coffee_house.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +57,7 @@ public class OrderService {
         Order placedOrder = orderRepository.save(order);
 
         List<Long> menuItems = orderFormDto.getItems().stream()
-                .map(OrderFormItemDto::getMenuId)
+                .map(OrderFormItemDto::getMenuItemId)
                 .toList();
 
         Map<Long, Menu> mapMenuItems = menuService.findMenuByIdIn(menuItems).stream()
@@ -64,7 +65,7 @@ public class OrderService {
 
         Set<OrderItem> orderItems = orderFormDto.getItems().stream()
                 .map(orderFormItemDto -> {
-                    Menu menu = mapMenuItems.get(orderFormItemDto.getMenuId());
+                    Menu menu = mapMenuItems.get(orderFormItemDto.getMenuItemId());
                     OrderItem orderItem = new OrderItem();
                     orderItem.setOrder(placedOrder);
                     orderItem.setMenu(menu);
@@ -76,6 +77,7 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
 
         placedOrder.setOrderItems(orderItems);
+
         orderRepository.save(placedOrder);
 
         if (client != null) {
