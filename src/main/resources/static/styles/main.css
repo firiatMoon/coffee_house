@@ -27,19 +27,22 @@ main {
 }
 
 
-nav .nav-item a {
-    background-image: linear-gradient(to right, #feffff, #9498a6);
-    background-repeat: no-repeat;
-    background-size: 0 100%;
-    border-radius: 4px;
-    text-decoration: none;
-    padding: 5px 15px;
-    transition: 0.6s;
-}
+/*nav .nav-item a {*/
+/*    background-image: linear-gradient(to right, #feffff, #9498a6);*/
+/*    background-repeat: no-repeat;*/
+/*    background-size: 0 100%;*/
+/*    border-radius: 4px;*/
+/*    text-decoration: none;*/
+/*    padding: 5px 15px;*/
+/*    transition: 0.6s;*/
+/*}*/
+
 
 nav .nav-item a:hover {
-    background-size: 100% 100%;
+    color: #17181e;
+    font-size: 28px;
 }
+
 
 .category__logo img {
     width: 50%;
@@ -57,4 +60,51 @@ footer {
 .footer__social_network img{
     width: 5%;
     height: 6%;
+}
+
+#snackbar_success, #snackbar_error {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -125px;
+    background-color: #333;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 2px;
+    padding: 16px;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    top: 30px;
+}
+
+#snackbar_error {
+    background-color:#cb4a38;
+}
+
+#snackbar_success.show, #snackbar_error.show {
+    visibility: visible;
+    -webkit-animation: fadein 1s, fadeout 1s 2.5s;
+    animation: fadein 1s, fadeout 1s 2.5s;
+}
+
+
+@-webkit-keyframes fadein {
+    from {top: 0; opacity: 0;}
+    to {top: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {top: 0; opacity: 0;}
+    to {top: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {top: 30px; opacity: 1;}
+    to {top: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {top: 30px; opacity: 1;}
+    to {top: 0; opacity: 0;}
 }

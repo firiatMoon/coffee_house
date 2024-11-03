@@ -31,7 +31,8 @@ public class CategoryService {
     }
 
     public Category findByTitle(String title) {
-        return categoryRepository.findByTitle(title).orElse(null);
+        return categoryRepository.findByTitle(title)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
     }
 
     public void delete(Integer id) {

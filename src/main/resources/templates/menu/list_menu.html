@@ -24,8 +24,15 @@
                     <div class="col-lg-2">
                         <h1>Menu</h1>
                     </div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-7">
                         <a class="btn btn-outline-dark me-3" th:href="@{menu/new}">Add new item</a>
+                    </div>
+                    <div class="col-lg-3">
+                        <form th:action="@{/menu}" class="d-flex" method="get">
+                            <input class="form-control me-2" name="keyword" type="search" placeholder="Search"
+                                   aria-label="Search">
+                            <button class="btn btn-outline-dark" type="submit">Search</button>
+                        </form>
                     </div>
                 </div>
                 <table class="table table-striped fs-5">
@@ -62,28 +69,28 @@
                         <ul class="pagination">
                             <li class="page-item">
                                 <a class="page-link text-dark" th:if="${pageNumber > 1}"
-                                   th:href="@{/menu(pageNumber=${0}, pageSize=${5})}">
+                                   th:href="@{/menu(pageNumber=${0}, pageSize=${5}, keyword=${keyword})}">
                                     <span th:unless="${pageNumber > 1}"></span>First</a>
                             </li>
                             <li class="page-item">
                                 <a class="page-link text-dark" th:if="${pageNumber > 0}"
-                                   th:href="@{/menu(pageNumber=${pageNumber - 1}, pageSize=${5})}">
+                                   th:href="@{/menu(pageNumber=${pageNumber - 1}, pageSize=${5}, keyword=${keyword})}">
                                     <span th:unless="${pageNumber > 1}"></span>Previous</a>
                             </li>
                             <li class="page-item" th:each="pageNumber: ${#numbers.sequence(1, totalPages)}">
                                 <a class="page-link text-dark"
-                                   th:href="@{/menu(pageNumber=${pageNumber - 1}, pageSize=${5})}">
+                                   th:href="@{/menu(pageNumber=${pageNumber - 1}, pageSize=${5}, keyword=${keyword})}">
                                     [[${pageNumber}]]
                                 </a>
                             </li>
                             <li class="page-item">
                                 <a class="page-link text-dark" th:if="${pageNumber < totalPages - 1}"
-                                   th:href="@{/menu(pageNumber=${pageNumber + 1}, pageSize=${5})}">
+                                   th:href="@{/menu(pageNumber=${pageNumber + 1}, pageSize=${5}, keyword=${keyword})}">
                                     <span th:unless="${pageNumber < totalPages}"></span>Next</a>
                             </li>
                             <li class="page-item">
                                 <a class="page-link text-dark" th:if="${pageNumber < totalPages}"
-                                   th:href="@{/menu(pageNumber=${totalPages - 1})}">
+                                   th:href="@{/menu(pageNumber=${totalPages - 1}, keyword=${keyword})}">
                                     <span th:unless="${pageNumber < totalPages}"></span>Last</a>
                             </li>
                         </ul>

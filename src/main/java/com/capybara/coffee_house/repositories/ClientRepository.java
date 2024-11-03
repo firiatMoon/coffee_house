@@ -19,10 +19,10 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
 
 
-    @Query(value = "SELECT * FROM client " +
-            "WHERE email IS NOT NULL " +
-            "AND extract(MONTH FROM birthday) = :m " +
-            "AND extract(DAY FROM birthday) = :d",
+    @Query(value = "select * from client " +
+            "where email IS NOT NULL " +
+            "and extract(MONTH FROM birthday) = :m " +
+            "and extract(DAY FROM birthday) = :d",
             nativeQuery = true)
     List<Client> findByMatchMonthAndMatchDay(@Param("m") int month, @Param("d") int day);
 }

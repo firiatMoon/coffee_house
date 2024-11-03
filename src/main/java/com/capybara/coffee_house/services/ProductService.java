@@ -5,7 +5,6 @@ import com.capybara.coffee_house.dto.ProductDto;
 import com.capybara.coffee_house.entities.Category;
 import com.capybara.coffee_house.entities.Product;
 import com.capybara.coffee_house.exceptions.EntityNotFoundException;
-import com.capybara.coffee_house.repositories.CategoryRepository;
 import com.capybara.coffee_house.repositories.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,11 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    //get products by keyword
+    public Page<Product> findByKeyword(String keyword, Pageable pageable) {
+        return productRepository.findByKeywordIgnoreCase(keyword, pageable);
+    }
+
     public Page<Product> findPageByCategory(Integer categoryId, Pageable pageable) {
         return productRepository.findAllByCategoryId(categoryId, pageable);
     }
@@ -54,7 +58,6 @@ public class ProductService {
     public void delete(Long id) {
         productRepository.deleteById(id);
     }
-
 
     //Конвертацию из Product в ProductDto
     public ProductDto convertToDto(Product product) {

@@ -77,7 +77,10 @@
 
             <input type="hidden" id="clientId" name="client.id">
 
-            <button type="submit" class="btn btn-secondary">Create Order</button>
+            <button type="submit" class="btn btn-secondary" onclick="showSnackbar()">Create Order</button>
+            <div id="snackbar_success">Order created successfully!</div>
+            <div id="snackbar_error">Error creating order</div>
+
         </form>
         </div>
     </div>
@@ -220,13 +223,18 @@
                     discountAmount: $('#discountAmount').val(),
                     finalAmount: $('#finalAmount').val()
                 }),
-                success: function() {
-                    alert('Order created successfully!');
-                    window.location.href = "/menu"
-                    // Optionally redirect or reset the form
+
+                success: function showSnackbar() {
+                    var x = document.getElementById("snackbar_success");
+                    x.className = "show";
+                    setTimeout(function(){ x.className = x.className.replace("show", "");}, 2000);
+                    setTimeout(() => window.location.href = "/menu", 3000)
                 },
-                error: function() {
-                    alert('Error creating order');
+
+                error: function showSnackbar() {
+                    var x = document.getElementById("snackbar_error");
+                    x.className = "show";
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
                 }
             });
         });

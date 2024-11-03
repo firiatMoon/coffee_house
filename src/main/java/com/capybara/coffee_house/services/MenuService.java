@@ -8,9 +8,10 @@ import com.capybara.coffee_house.entities.Product;
 import com.capybara.coffee_house.entities.Unit;
 import com.capybara.coffee_house.exceptions.EntityNotFoundException;
 import com.capybara.coffee_house.repositories.MenuRepository;
+import com.capybara.coffee_house.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,20 +22,28 @@ public class MenuService {
     private final MenuRepository menuRepository;
     private final ProductService productService;
     private final UnitService unitService;
+    private final ProductRepository productRepository;
 
     @Autowired
-    public MenuService(MenuRepository menuRepository, ProductService productService, UnitService unitService) {
+    public MenuService(MenuRepository menuRepository, ProductService productService, UnitService unitService, ProductRepository productRepository) {
         this.menuRepository = menuRepository;
         this.productService = productService;
         this.unitService = unitService;
+        this.productRepository = productRepository;
     }
 
     public List<Menu> findAll() {
         return menuRepository.findAll();
     }
 
-    public Page<Menu> findPage(PageRequest pageRequest) {
-        return menuRepository.findAll(pageRequest);
+    //get products by keyword
+    public Page<Menu> findByKeyword(String keyword, Pageable pageable) {
+        Long productId = productRepository.findByName(keyword).getId();
+        return menuRepository.findByProductId(productId, pageable);
+    }
+
+    public Page<Menu> findPage(Pageable pageable) {
+        return menuRepository.findAll(pageable);
     }
 
     public Menu getMenuById(Long menuId) {
