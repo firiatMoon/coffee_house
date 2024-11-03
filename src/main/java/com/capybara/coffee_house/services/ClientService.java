@@ -37,6 +37,7 @@ public class ClientService {
         BonusCard bonusCard = new BonusCard();
         bonusCard.setClient(savedClient);
         bonusCard.setAmount(BigDecimal.valueOf(0.0));
+        bonusCard.setDiscountPercent(5);
         bonusCardService.save(bonusCard);
     }
 

@@ -1,7 +1,6 @@
 package com.capybara.coffee_house.controllers;
 
 import com.capybara.coffee_house.dto.ProductDto;
-import com.capybara.coffee_house.entities.Menu;
 import com.capybara.coffee_house.services.CategoryService;
 import com.capybara.coffee_house.entities.Product;
 import com.capybara.coffee_house.services.ProductService;
@@ -31,23 +30,33 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
+
     @GetMapping({"", "/"})
     public String getAllPages(@RequestParam(value = "categoryId", required = false) String categoryId,
                               @RequestParam(value = "pageNumber", required = false, defaultValue = "0") int pageNumber,
                               @RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize,
+                              @RequestParam(defaultValue = "") String keyword,
                               Model model) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Product> page = categoryId == null ? productService.findPage(pageable)
-                : productService.findPageByCategory(Integer.parseInt(categoryId), pageable);
+        Page<Product> page = null;
+        List<Product> products = null;
+        if(keyword.isEmpty()) {
+            page = categoryId == null ? productService.findPage(pageable)
+                    : productService.findPageByCategory(Integer.parseInt(categoryId), pageable);
+        } else{
+            page = productService.findByKeyword(keyword, pageable);
+        }
+
         int totalPages = page.getTotalPages();
         long totalElements = page.getTotalElements();
-        List<Product> products = page.getContent();
+        products = page.getContent();
 
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("totalElements", totalElements);
         model.addAttribute("products", products);
         model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("keyword", keyword);
         return "product/list";
     }
 

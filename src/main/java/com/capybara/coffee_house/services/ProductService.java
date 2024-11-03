@@ -36,6 +36,11 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    //get products by keyword
+    public Page<Product> findByKeyword(String keyword, Pageable pageable) {
+        return productRepository.findByKeywordIgnoreCase(keyword, pageable);
+    }
+
     public Page<Product> findPageByCategory(Integer categoryId, Pageable pageable) {
         return productRepository.findAllByCategoryId(categoryId, pageable);
     }
@@ -53,7 +58,6 @@ public class ProductService {
     public void delete(Long id) {
         productRepository.deleteById(id);
     }
-
 
     //Конвертацию из Product в ProductDto
     public ProductDto convertToDto(Product product) {

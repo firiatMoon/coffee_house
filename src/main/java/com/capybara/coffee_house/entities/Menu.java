@@ -20,12 +20,12 @@ public class Menu {
     @ToString.Exclude
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     @ToString.Exclude
     private Product product;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "unit_id", referencedColumnName = "id")
     @ToString.Exclude
     private Unit unit;

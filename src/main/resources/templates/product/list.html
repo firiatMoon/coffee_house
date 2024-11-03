@@ -43,7 +43,7 @@
                             <a class="btn btn-outline-dark me-3" th:href="@{product/new}">Create new product</a>
                         </div>
                         <div class="col-lg-3">
-                            <form th:action="@{/product}" class="d-flex" method="get">
+                            <form th:action="@{/product}" class="d-flex" method="get" th:unless="${param.categoryId != null}">
                                 <input class="form-control me-2" name="keyword" type="search" placeholder="Search"
                                        aria-label="Search">
                                 <button class="btn btn-outline-dark" type="submit">Search</button>
@@ -81,7 +81,7 @@
                     <div class="fs-5 mt-3">
                         <nav aria-label="Page navigation example" th:unless="${totalElements < 6}">
                             <p class="fs-6">Total items: [[${totalElements}]]
-                                Page [[${pageNumber}]] of [[${totalPages}]]</p>
+                                Page [[${pageNumber} + 1]] of [[${totalPages}]]</p>
                             <ul class="pagination">
                                 <li class="page-item">
 <!--                                    if all product without categoryId-->
@@ -90,7 +90,7 @@
                                         <span th:unless="${pageNumber > 1}"></span>First</a>
 
                                     <a class="page-link text-dark" th:if="${pageNumber > 1}" th:unless="${param.categoryId != null}"
-                                       th:href="@{/product(pageNumber=${0}, pageSize=${5})}">
+                                       th:href="@{/product(pageNumber=${0}, pageSize=${5}, keyword=${keyword})}">
                                         <span th:unless="${pageNumber > 1}"></span>First</a>
                                 </li>
                                 <li class="page-item">
@@ -99,17 +99,18 @@
                                         <span th:unless="${pageNumber > 1}"></span>Previous</a>
 
                                     <a class="page-link text-dark" th:if="${pageNumber > 0}" th:unless="${param.categoryId != null}"
-                                       th:href="@{/product(pageNumber=${pageNumber - 1}, pageSize=${5})}">
+                                       th:href="@{/product(pageNumber=${pageNumber - 1}, pageSize=${5}, keyword=${keyword})}">
                                         <span th:unless="${pageNumber > 1}"></span>Previous</a>
                                 </li>
                                 <li class="page-item" th:each="pageNumber: ${#numbers.sequence(1, totalPages)}">
                                     <a class="page-link text-dark" th:if="${param.categoryId != null}"
-                                       th:href="@{/product(categoryId=${param.categoryId}, pageNumber=${pageNumber - 1}, pageSize=${5})}">
+                                       th:href="@{/product(categoryId=${param.categoryId}, pageNumber=${pageNumber - 1},
+                                       pageSize=${5}, keyword=${keyword})}">
                                         [[${pageNumber}]]
                                     </a>
 
                                     <a class="page-link text-dark" th:unless="${param.categoryId != null}"
-                                       th:href="@{/product(pageNumber=${pageNumber - 1}, pageSize=${5})}">
+                                       th:href="@{/product(pageNumber=${pageNumber - 1}, pageSize=${5}, keyword=${keyword})}">
                                         [[${pageNumber}]]
                                     </a>
                                 </li>
@@ -120,7 +121,7 @@
 
                                     <a class="page-link text-dark" th:if="${pageNumber < totalPages - 1}"
                                        th:unless="${param.categoryId != null}"
-                                       th:href="@{/product(pageNumber=${pageNumber + 1}, pageSize=${5})}">
+                                       th:href="@{/product(pageNumber=${pageNumber + 1}, pageSize=${5}, keyword=${keyword})}">
                                         <span th:unless="${pageNumber < totalPages}"></span>Next</a>
                                 </li>
                                 <li class="page-item">
@@ -130,7 +131,7 @@
 
                                     <a class="page-link text-dark" th:if="${pageNumber < totalPages}"
                                        th:unless="${param.categoryId != null}"
-                                       th:href="@{/product(pageNumber=${totalPages - 1})}">
+                                       th:href="@{/product(pageNumber=${totalPages - 1}, keyword=${keyword})}">
                                         <span th:unless="${pageNumber < totalPages}"></span>Last</a>
                                 </li>
                             </ul>

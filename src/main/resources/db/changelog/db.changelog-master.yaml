@@ -10,4 +10,4 @@ databaseChangeLog:
   - include:
       file: db/changelog/db.changelog-5.0.create_bonus_card.sql
   - include:
-      file: db/changelog/db.changelog-5.0.create_orders.sql
+      file: db/changelog/db.changelog-6.0.create_orders.sql

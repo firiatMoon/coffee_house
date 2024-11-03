@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,17 +35,26 @@ public class MenuController {
     @GetMapping({"", "/"})
     public String getAllPages(@RequestParam(value = "pageNumber", required = false, defaultValue = "0") int pageNumber,
                               @RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize,
+                              @RequestParam(defaultValue = "") String keyword,
                               Model model){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Menu> page = null;
+        List<Menu> menus = null;
 
-        Page<Menu> page = menuService.findPage(PageRequest.of(pageNumber, pageSize));
+        if(keyword.isEmpty()) {
+            page = menuService.findPage(pageable);
+        } else{
+            page = menuService.findByKeyword(keyword, pageable);
+        }
         int totalPages = page.getTotalPages();
         long totalElements = page.getTotalElements();
-        List<Menu> menus = page.getContent();
+        menus = page.getContent();
 
         model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("totalElements", totalElements);
         model.addAttribute("menu", menus);
+        model.addAttribute("keyword", keyword);
         return "menu/list_menu";
     }
 

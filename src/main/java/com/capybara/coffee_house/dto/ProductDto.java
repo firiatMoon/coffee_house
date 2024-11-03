@@ -17,7 +17,7 @@ public class ProductDto {
     @NotEmpty(message = "The name is required")
     private String name;
 
-    @Size(min=10, message = "The description should be at least 10 characters")
+    @Size(min=5, message = "The description should be at least 5 characters")
     @Size(max=1000, message = "The description cannot exceed 1000 characters")
     private String description;
 

@@ -1,6 +1,5 @@
 package com.capybara.coffee_house.services.telegrambot.handlers;
 
-import com.capybara.coffee_house.entities.BonusCard;
 import com.capybara.coffee_house.entities.Client;
 import com.capybara.coffee_house.enums.RegistrationState;
 import com.capybara.coffee_house.services.BonusCardService;
@@ -11,10 +10,6 @@ import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
-
-import java.util.List;
 
 import static com.capybara.coffee_house.constants.TelegramBotConstant.*;
 
