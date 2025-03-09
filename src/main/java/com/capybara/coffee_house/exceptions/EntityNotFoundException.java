@@ -1,7 +1,0 @@
-package com.capybara.coffee_house.exceptions;
-
-public class EntityNotFoundException extends RuntimeException{
-    public EntityNotFoundException(String message){
-        super(message);
-    }
-}

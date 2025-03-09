@@ -32,6 +32,14 @@ build/
 ### VS Code ###
 .vscode/
 
-
 .env
 **/src/main/resources/application-dev.yaml
+
+core_service/src/main/resources/application-dev.yaml
+
+mail_service/src/main/resources/application-dev.yaml
+
+tg_service/src/main/resources/application-dev.yaml
+
+
+

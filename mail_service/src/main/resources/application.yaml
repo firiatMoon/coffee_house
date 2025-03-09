@@ -1,0 +1,49 @@
+server:
+  port: ${SERVER_PORT:8083}
+
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+  mail:
+    host: ${EMAIL_HOST}
+    port: ${EMAIL_PORT}
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  rabbitmq:
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
+
+#logging:
+#  level:
+#    root: DEBUG
+##    org.springframework.web: DEBUG
+##    org.hibernate: ERROR
+#  file:
+#    name: ./logs/mail-service.log
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 10MB
+#      max-history: 30
+#  pattern:
+#    console: "%d{dd-MM-yyyy HH:mm:ss.SSS} %-5level - %msg%n"
+#    file: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+service:
+  activation:
+    uri: ${VERIFY_EMAIL_URI}
+
+queue:
+  congratulation-birthday: ${RABBIT_CONGRATULATION_BIRTHDAY_QUEUE}
+  verification-mail: ${RABBIT_VERIFICATION_MAIL_QUEUE}
+
+

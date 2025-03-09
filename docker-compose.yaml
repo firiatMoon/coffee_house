@@ -1,40 +1,159 @@
 version: '3.8'
 services:
 
-#  coffee_house:
-#    container_name: coffee_house
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    ports:
-#      - "8080:8080"
-#    environment:
-#      SPRING_DATASOURCE_URL: 'jdbc:postgresql://${POSTGRES_DATABASE}:5432/${POSTGRES_DATABASE}'
-#      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USERNAME}
-#      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-#    depends_on:
-#      - coffee_house_db
-#    networks:
-#      - appnet
-
-  coffee_house_db:
-    image: postgres:16-alpine
-    container_name: coffee_house_db
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${POSTGRES_USERNAME}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DATABASE}
+  core-service:
+    container_name: core-service
+    build:
+      context: ./core_service
+      dockerfile: Dockerfile
     ports:
-      - ${POSTGRES_PORT_MAPPING}
-    volumes:
-      - db-coffee-house:/var/lib/postgresql/data
+      - "8082:8082"
+    environment:
+      CORE_SERVICE_PORT: ${CORE_SERVICE_PORT}
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://${POSTGRES_DATABASE_CORE}:5432/${POSTGRES_DATABASE_CORE}'
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USERNAME_CORE}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD_CORE}
+      RABBIT_HOST: ${RABBIT_HOST}
+      RABBIT_PORT: ${RABBIT_PORT}
+      RABBIT_USERNAME: ${RABBIT_USERNAME}
+      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
+      RABBIT_CONGRATULATION_BIRTHDAY_QUEUE: ${RABBIT_CONGRATULATION_BIRTHDAY_QUEUE}
+      RABBIT_REGISTRATION_MAIL_QUEUE: ${RABBIT_REGISTRATION_MAIL_QUEUE}
+      RABBIT_VERIFICATION_MAIL_QUEUE: ${RABBIT_VERIFICATION_MAIL_QUEUE}
+      RABBIT_ANSWER_MESSAGE_QUEUE: ${RABBIT_ANSWER_MESSAGE_QUEUE}
+    depends_on:
+      rabbit-mq:
+        condition: service_healthy
+      core_service_db:
+        condition: service_healthy
+    restart: on-failure
     networks:
       - appnet
 
+  core_service_db:
+    image: postgres:16-alpine
+    container_name: core_service_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME_CORE}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_CORE}
+      POSTGRES_DB: ${POSTGRES_DATABASE_CORE}
+    ports:
+      - ${POSTGRES_PORT_MAPPING_CORE}
+    volumes:
+      - db-core-service:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME_CORE} -d ${POSTGRES_DATABASE_CORE} -h 127.0.0.1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    networks:
+      - appnet
+
+  mail-service:
+    container_name: mail-service
+    build:
+      context: ./mail_service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      MAIL_SERVICE_PORT: ${MAIL_SERVICE_PORT}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      RABBIT_HOST: ${RABBIT_HOST}
+      RABBIT_PORT: ${RABBIT_PORT}
+      RABBIT_USERNAME: ${RABBIT_USERNAME}
+      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
+      RABBIT_CONGRATULATION_BIRTHDAY_QUEUE: ${RABBIT_CONGRATULATION_BIRTHDAY_QUEUE}
+      RABBIT_VERIFICATION_MAIL_QUEUE: ${RABBIT_VERIFICATION_MAIL_QUEUE}
+      ACTIVATION_URI: ${ACTIVATION_URI}
+    depends_on:
+      rabbit-mq:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - appnet
+
+  tg_service:
+    container_name: tg_service
+    build:
+      context: ./tg_service
+      dockerfile: Dockerfile
+    ports:
+      - "8084:8084"
+    environment:
+      TG_SERVICE_PORT: ${TG_SERVICE_PORT}
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://${POSTGRES_DATABASE_TG}:5432/${POSTGRES_DATABASE_TG}'
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USERNAME_TG}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD_TG}
+      TG_BOT_NAME: ${TG_BOT_NAME}
+      TG_BOT_TOKEN: ${TG_BOT_TOKEN}
+      RABBIT_HOST: ${RABBIT_HOST}
+      RABBIT_PORT: ${RABBIT_PORT}
+      RABBIT_USERNAME: ${RABBIT_USERNAME}
+      RABBIT_PASSWORD: ${RABBIT_PASSWORD}
+      RABBIT_REGISTRATION_MAIL_QUEUE: ${RABBIT_REGISTRATION_MAIL_QUEUE}
+      RABBIT_ANSWER_MESSAGE_QUEUE: ${RABBIT_ANSWER_MESSAGE_QUEUE}
+    depends_on:
+      rabbit-mq:
+        condition: service_healthy
+      tg_service_db:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - appnet
+
+  tg_service_db:
+    image: postgres:16-alpine
+    container_name: tg_service_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME_TG}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_TG}
+      POSTGRES_DB: ${POSTGRES_DATABASE_TG}
+    ports:
+      - ${POSTGRES_PORT_MAPPING_TG}
+    volumes:
+      - db-tg-service:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME_TG} -d ${POSTGRES_DATABASE_TG} -h 127.0.0.1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    networks:
+      - appnet
+
+  rabbit-mq:
+    container_name: rabbit-mq
+    hostname: rabbitmq
+    image: rabbitmq:3.12.12-management-alpine
+    ports:
+      - ${RABBIT_AMQP_PORT_MAPPING}
+      - ${RABBIT_GUI_PORT_MAPPING}
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBIT_USERNAME}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_PASSWORD}
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "--silent", "--quiet", "ping" ]
+      interval: 10s
+      timeout: 10s
+      retries: 6
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - appnet
 
 volumes:
-  db-coffee-house:
+  db-core-service:
+  db-tg-service:
+  rabbitmq-data:
 
 networks:
   appnet:

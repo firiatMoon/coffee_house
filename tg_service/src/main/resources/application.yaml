@@ -1,0 +1,58 @@
+server:
+  port: ${SERVER_PORT:8084}
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_SQL_HOST}:${POSTGRES_SQL_PORT}/${POSTGRES_SQL_DB}
+    username: ${POSTGRES_SQL_USERNAME}
+    password: ${POSTGRES_SQL_PASSWORD}
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  rabbitmq:
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
+
+#logging:
+#  level:
+#    root: DEBUG
+##    org.springframework.web: DEBUG
+##    org.hibernate: ERROR
+#  file:
+#    name: ./logs/tg-service.log
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 10MB
+#      max-history: 30
+#  pattern:
+#    console: "%d{dd-MM-yyyy HH:mm:ss.SSS} %-5level - %msg%n"
+#    file: "%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+queue:
+  registration-mail: ${RABBIT_REGISTRATION_MAIL_QUEUE}
+  answer-message-queue: ${RABBIT_ANSWER_MESSAGE_QUEUE}
+  registration-state: ${RABBIT_REGISTRATION_STATE_QUEUE}
+
+telegram:
+  bot:
+    name: ${TELEGRAM_BOT_NAME}
+    token: ${TELEGRAM_BOT_TOKEN}
+
+service:
+  pass:
+    char-id-uri: ${PASS_DATA_CHAR_ID_URI}
+    username-uri: ${PASS_DATA_USERNAME-URI}
+    bonus-card-uri: ${PASS_DATA_BONUS_CARD_URI}
+    is-active-uri: ${PASS_DATA_IS_ACTIVE_URI}
+    birthday-uri: ${PASS_DATA_BIRTHDAY_URI}
+    phone-uri: ${PASS_DATA_PHONE_URI}
+    email-uri: ${PASS_DATA_EMAIL_URI}
+
