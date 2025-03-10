@@ -21,6 +21,15 @@ spring:
     port: ${RABBIT_PORT}
     username: ${RABBIT_USERNAME}
     password: ${RABBIT_PASSWORD}
+  cache:
+    type: redis
+    cache-names: redis-cache
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+
 
 #logging:
 #  level:

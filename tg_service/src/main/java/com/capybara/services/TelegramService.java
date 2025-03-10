@@ -6,7 +6,6 @@ import com.capybara.repositories.TelegramRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.Optional;
 
 @Service
