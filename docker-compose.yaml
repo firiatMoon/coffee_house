@@ -150,13 +150,10 @@ services:
     networks:
       - appnet
 
-
-
 volumes:
   db-core-service:
   db-tg-service:
   rabbitmq-data:
-
 
 networks:
   appnet:

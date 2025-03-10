@@ -14,7 +14,7 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "menu_item")
-public class Menu {
+public class Menu{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Exclude

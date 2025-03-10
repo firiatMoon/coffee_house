@@ -9,6 +9,7 @@ import com.capybara.entities.Client;
 import com.capybara.exceptions.EntityNotFoundException;
 import com.capybara.rabbitmq.RabbitMQProducer;
 import com.capybara.repositories.ClientRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class ClientService {
     }
 
     //create Client
+    @Transactional
     public void createClient(Long chatId) {
         Client client = Client.builder()
                 .chatId(chatId)
