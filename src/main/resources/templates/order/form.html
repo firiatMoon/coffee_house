@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link type='text/css' rel='stylesheet' th:href="@{/styles/main.css}">
+    <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
+    <link href="https://fonts.cdnfonts.com/css/lucida-console" rel="stylesheet">
+</head>
+<body>
+<div class="wrapper">
+    <header>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    </header>
+    <main>
+    <div class="container m-5">
+        <div class="col-md-10 mx-auto p-4 m-4">
+        <h1>Create Order</h1>
+        <form id="orderForm">
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number">
+                <button type="button" id="fetchClient" class="btn btn-outline-dark">Fetch Client</button>
+            </div>
+
+            <div id="clientInfo" class="mb-3 fs-6"></div>
+
+            <div class="form-group" id="bonusPointsActionContainer" style="display: none;">
+                <label for="bonusPointsAction">Bonus Points Action</label>
+                <select class="form-control" id="bonusPointsAction" name="bonusPointsAction">
+                    <option value="EARN">Earn Points</option>
+                    <option value="USE">Use Points</option>
+                </select>
+            </div>
+
+            <div id="orderItems">
+                <div class="order-item">
+                    <div class="form-group">
+                        <label for="menuItem1">Menu Item</label>
+                        <select class="form-control menu-item-select" name="items[0].menuItemId" required id="menuItem1">
+                            <option value="">--Select Menu Item--</option>
+                            <!-- Options will be populated by Thymeleaf -->
+                            <th:block th:each="item, iter : ${menuItems}">
+                                <option th:value="${item.id}"
+                                        th:text="${item.product.name +' ' + item.quantity + ' ' + item.unit.name}">
+                                </option>
+                            </th:block>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity1">Quantity</label>
+                        <input type="number" class="form-control" name="items[0].quantity" min="1" required id="quantity1">
+                    </div>
+                    <button type="button" class="btn btn-danger remove-item">Remove</button>
+                </div>
+            </div>
+
+            <button type="button" id="addOrderItem" class="btn btn-outline-dark">Add Order Item</button>
+
+            <div class="form-group mt-3">
+                <label for="totalAmount">Total Amount</label>
+                <input type="text" class="form-control" id="totalAmount" name="totalAmount" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="discountAmount">Discount Amount</label>
+                <input type="text" class="form-control" id="discountAmount" name="discountAmount" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="finalAmount">Final Amount</label>
+                <input type="text" class="form-control" id="finalAmount" name="finalAmount" readonly>
+            </div>
+
+            <input type="hidden" id="clientId" name="client.id">
+
+            <button type="submit" class="btn btn-secondary" onclick="showSnackbar()">Create Order</button>
+            <div id="snackbar_success">Order created successfully!</div>
+            <div id="snackbar_error">Error creating order</div>
+
+        </form>
+        </div>
+    </div>
+    </main>
+    <footer>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script th:inline="javascript">
+    // Переданное в thymeleaf значение передаем в скрипт
+    let menuItems = /*[[${menuItems}]]*/;
+    let user = /*[[${user}]]*/;
+    let clientBonusCard;
+
+    $(document).ready(function() {
+        // Store client points in a variable
+        let clientPoints = 0;
+
+        // Add new order item row
+        let itemCounter = 1;
+        $('#addOrderItem').click(function() {
+            itemCounter++;
+            let menuItemOptions = menuItems.map(item => `<option value="${item.id}"> ${item.product.name} ${item.quantity}  ${item.unit.name} </option>`)
+            let newItemHtml = `
+                <div class="order-item">
+                    <div class="form-group">
+                        <label for="menuItem${itemCounter}">Menu Item</label>
+                        <select class="form-control menu-item-select" name="items[${itemCounter - 1}].menuItemId" required>
+                            <option value="">Select Menu Item</option>
+                            ${menuItemOptions}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity${itemCounter}">Quantity</label>
+                        <input type="number" class="form-control" name="items[${itemCounter - 1}].quantity" min="1" required>
+                    </div>
+                    <button type="button" class="btn btn-danger remove-item">Remove</button>
+                </div>
+            `;
+            $('#orderItems').append(newItemHtml);
+        });
+
+        // Remove order item row
+        $('#orderItems').on('click', '.remove-item', function() {
+            $(this).closest('.order-item').remove();
+            calculateTotals();
+        });
+
+        // Fetch client info by phone number
+        $('#fetchClient').click(function() {
+            let phoneNumber = $('#phoneNumber').val().trim();
+            $.get(`/api/clientBonusCard?phone=${phoneNumber}`, function(bonusCard) {
+                clientBonusCard = bonusCard
+                $('#clientInfo').html(`
+                    <h4>Client Info</h4>
+                    <p>Name: ${bonusCard.client.username}</p>
+                    <p>Email: ${bonusCard.client.email}</p>
+                    <p>Phone: ${bonusCard.client.phone}</p>
+                    <p>Points: ${bonusCard.amount}</p>
+                `);
+                clientPoints = bonusCard.amount;
+                $('#orderForm').find('input[name="client.id"]').val(bonusCard.client.id);
+                $('#bonusPointsActionContainer').show(); // Show bonus points action field
+                calculateTotals();
+            }).fail(function() {
+                clientBonusCard = null
+                $('#clientInfo').html('<p>Client not found</p>');
+                clientPoints = 0;
+                $('#orderForm').find('input[name="client.id"]').val('');
+                $('#bonusPointsActionContainer').hide(); // Hide bonus points action field
+                calculateTotals();
+            });
+        });
+
+        // Calculate totals
+        function calculateTotals() {
+            let totalAmount = 0;
+            $('.order-item').each(function() {
+                let quantity = parseFloat($(this).find('input[name$=".quantity"]').val()) || 0;
+                let menuItemId = $(this).find('select[name$=".menuItemId"]').val();
+
+                // Найти цену в списке menuItems
+                let menuItem = menuItems.find(item => item.id == menuItemId);
+                let price = menuItem ? parseFloat(menuItem.price) : 0;
+
+                if (price && quantity) {
+                    totalAmount += price * quantity;
+                }
+            });
+
+            totalAmount = totalAmount || 0; // Default to 0 if undefined
+            $('#totalAmount').val(totalAmount.toFixed(2));
+
+            let bonusPointsAction = $('#bonusPointsAction').val();
+            let discountAmount = 0;
+            if (bonusPointsAction === 'USE') {
+                discountAmount = clientPoints || 0; // Default to 0 if undefined
+            }
+            $('#discountAmount').val(discountAmount.toFixed(2));
+
+            let finalAmount = totalAmount - discountAmount;
+            finalAmount = finalAmount || 0; // Default to 0 if undefined
+            $('#finalAmount').val(finalAmount.toFixed(2));
+        }
+
+        // Update totals on input changes
+        $('#orderItems').on('input change', 'input[name$=".quantity"], .menu-item-select', function() {
+            calculateTotals();
+        });
+
+        $('#bonusPointsAction').change(calculateTotals);
+
+        // Submit form
+        $('#orderForm').submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '/api/order',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    user: user,
+                    client: clientBonusCard ? clientBonusCard.client : null,
+                    bonusPointsAction: clientBonusCard ? $('#bonusPointsAction').val() : null,
+                    items: $('.order-item').map(function() {
+                        return {
+                            menuItemId: $(this).find('select.menu-item-select').val(),
+                            quantity: $(this).find('input[name$=".quantity"]').val()
+                        };
+                    }).get(),
+                    totalAmount: $('#totalAmount').val(),
+                    discountAmount: $('#discountAmount').val(),
+                    finalAmount: $('#finalAmount').val()
+                }),
+
+                success: function showSnackbar() {
+                    var x = document.getElementById("snackbar_success");
+                    x.className = "show";
+                    setTimeout(function(){ x.className = x.className.replace("show", "");}, 2000);
+                    setTimeout(() => window.location.href = "/menu", 3000)
+                },
+
+                error: function showSnackbar() {
+                    var x = document.getElementById("snackbar_error");
+                    x.className = "show";
+                    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
